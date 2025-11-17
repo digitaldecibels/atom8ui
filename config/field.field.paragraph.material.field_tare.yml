@@ -1,0 +1,23 @@
+uuid: 582f9495-197b-45bd-a04c-80e6e48ce2fa
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_tare
+    - paragraphs.paragraphs_type.material
+id: paragraph.material.field_tare
+field_name: field_tare
+entity_type: paragraph
+bundle: material
+label: Tare
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: decimal

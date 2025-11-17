@@ -1,0 +1,156 @@
+const defaultTheme = require('tailwindcss/defaultTheme')
+const plugin = require('tailwindcss/plugin')
+const Color = require('color')
+
+// --- 1. DEFINE THE ENTIRE COLOR PALETTE AS A JAVASCRIPT OBJECT ---
+const COLOR_PALETTE = {
+  transparent: 'transparent',
+  white: '#ffffff',
+  black: '#000000',
+  gray: {
+    '50': '#f9fafb', '100': '#f4f5f7', '200': '#e5e7eb', '300': '#d5d6d7', 
+    '400': '#9e9e9e', '500': '#707275', '600': '#4c4f52', '700': '#24262d', 
+    '800': '#1a1c23', '900': '#121317',
+  },
+  'cool-gray': {
+    '50': '#fbfdfe', '100': '#f1f5f9', '200': '#e2e8f0', '300': '#cfd8e3', 
+    '400': '#97a6ba', '500': '#64748b', '600': '#475569', '700': '#364152', 
+    '800': '#27303f', '900': '#1a202e',
+  },
+  red: {
+    '50': '#fdf2f2', '100': '#fde8e8', '200': '#fbd5d5', '300': '#f8b4b4', 
+    '400': '#f98080', '500': '#f05252', '600': '#e02424', '700': '#c81e1e', 
+    '800': '#9b1c1c', '900': '#771d1d',
+  },
+  orange: {
+    '50': '#fff8f1', '100': '#feecdc', '200': '#fcd9bd', '300': '#fdba8c', 
+    '400': '#ff8a4c', '500': '#ff5a1f', '600': '#d03801', '700': '#b43403', 
+    '800': '#8a2c0d', '900': '#771d1d',
+  },
+  yellow: {
+    '50': '#fdfdea', '100': '#fdf6b2', '200': '#fce96a', '300': '#faca15', 
+    '400': '#e3a008', '500': '#c27803', '600': '#9f580a', '700': '#8e4b10', 
+    '800': '#723b13', '900': '#633112',
+  },
+  green: {
+    '50': '#f3faf7', '100': '#def7ec', '200': '#bcf0da', '300': '#84e1bc', 
+    '400': '#31c48d', '500': '#0e9f6e', '600': '#057a55', '700': '#046c4e', 
+    '800': '#03543f', '900': '#014737',
+  },
+  teal: {
+    '50': '#edfafa', '100': '#d5f5f6', '200': '#afecef', '300': '#7edce2', 
+    '400': '#16bdca', '500': '#0694a2', '600': '#047481', '700': '#036672', 
+    '800': '#05505c', '900': '#014451',
+  },
+  blue: {
+    '50': '#ebf5ff', '100': '#e1effe', '200': '#c3ddfd', '300': '#a4cafe', 
+    '400': '#76a9fa', '500': '#3f83f8', '600': '#1c64f2', '700': '#1a56db', 
+    '800': '#1e429f', '900': '#233876',
+  },
+  indigo: {
+    '50': '#f0f5ff', '100': '#e5edff', '200': '#cddbfe', '300': '#b4c6fc', 
+    '400': '#8da2fb', '500': '#6875f5', '600': '#5850ec', '700': '#5145cd', 
+    '800': '#42389d', '900': '#362f78',
+  },
+  purple: {
+    '50': '#f6f5ff', '100': '#edebfe', '200': '#dcd7fe', '300': '#cabffd', 
+    '400': '#ac94fa', '500': '#9061f9', '600': '#7e3af2', '700': '#6c2bd9', 
+    '800': '#5521b5', '900': '#4a1d96',
+  },
+  pink: {
+    '50': '#fdf2f8', '100': '#fce8f3', '200': '#fad1e8', '300': '#f8b4d9', 
+    '400': '#f17eb8', '500': '#e74694', '600': '#d61f69', '700': '#bf125d', 
+    '800': '#99154b', '900': '#751a3d',
+  },
+}
+
+// --- 2. FUNCTION TO MAP HEX CODES TO CSS VARIABLES ---
+function mapColorsToCSSVars(colors) {
+  const mappedColors = {}
+  for (const name in colors) {
+    const value = colors[name]
+    if (typeof value === 'object') {
+      // Handle color shades (e.g., gray-50, gray-100)
+      mappedColors[name] = Object.fromEntries(
+        Object.keys(value).map(shade => [
+          shade,
+          `var(--color-${name}-${shade})`
+        ])
+      )
+    } else {
+      // Handle single colors (e.g., transparent, white, black)
+      mappedColors[name] = value
+    }
+  }
+  return mappedColors
+}
+
+// --- 3. EXPORT THE CONFIG USING MAPPED COLORS ---
+module.exports = {
+
+  content: [
+    './**/*.html', 
+    './templates/**/*.{html,twig}', 
+    './**/*.js', 
+  ],
+
+  theme: {
+    themeVariants: ['dark'],
+    customForms: (theme) => ({
+      default: {
+        'input, textarea': {
+          '&::placeholder': {
+            // Note: We keep theme() here, but the underlying color is now a CSS variable!
+            color: theme('colors.gray.400'),
+          },
+        },
+      },
+    }),
+    colors: mapColorsToCSSVars(COLOR_PALETTE), // <-- Use the mapped CSS variables here
+    extend: {
+      maxHeight: {
+        '0': '0',
+        xl: '36rem',
+      },
+      fontFamily: {
+        sans: ['Inter', ...defaultTheme.fontFamily.sans],
+      },
+    },
+  },
+  // ... (variants and plugins remain the same) ...
+  variants: {
+    // ...
+  },
+  plugins: [
+    require('tailwindcss-multi-theme'),
+    require('@tailwindcss/custom-forms'),
+    plugin(({ addUtilities, e, theme, variants }) => {
+      const newUtilities = {}
+      // The plugin logic is safe because theme('colors') now returns the CSS var strings
+      Object.entries(theme('colors')).map(([name, value]) => {
+        if (name === 'transparent' || name === 'current' || typeof value !== 'object') return
+        const color = value[300] // Since color is a var(--...), Color() won't work directly here.
+        
+        // You MUST change how the shadow plugin works, as Color(var(...)) will fail.
+        // For a full variable approach, you would define the HSLA version as a separate variable
+        // like --shadow-outline-gray: hsla(0, 0%, 62%, 0.45);
+        
+        // We'll revert this specific plugin back to using the hardcoded values for the outline shadow
+        // to keep the configuration stable, or remove it, as `Color()` cannot parse `var(--...)`.
+        
+        // --- REVISED PLUGIN LOGIC ---
+        const originalValue = COLOR_PALETTE[name]; // Get original hex
+        if (originalValue) {
+            const hex300 = originalValue[300] ? originalValue[300] : originalValue;
+            const hsla = Color(hex300).alpha(0.45).hsl().string();
+
+            newUtilities[`.shadow-outline-${name}`] = {
+                'box-shadow': `0 0 0 3px ${hsla}`,
+            };
+        }
+      })
+
+      addUtilities(newUtilities, variants('boxShadow'))
+    }),
+  ],
+}

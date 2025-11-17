@@ -1,0 +1,31 @@
+field.formatter.settings.editablefields_formatter:
+  type: mapping
+  label: 'Editable Fields formatter'
+  mapping:
+    form_mode:
+      type: string
+      label: 'Form mode'
+    behaviour:
+      type: string
+      label: 'Behaviour'
+    bypass_access:
+      type: bool
+      label: 'Bypass access'
+    fallback_access:
+      type: bool
+      label: 'Fallback access'
+    display_mode_access:
+      type: string
+      label: 'Display mode access'
+    fallback_edit:
+      type: bool
+      label: 'Fallback edit'
+    display_mode_edit:
+      type: string
+      label: 'Display mode edit'
+    fields_ajax_trigger:
+      type: string
+      label: 'Fields triggering ajax submit'
+    fields_ajax_trigger_event:
+      type: string
+      label: 'Event that will trigger ajax submit'

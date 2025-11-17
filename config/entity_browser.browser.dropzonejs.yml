@@ -1,0 +1,37 @@
+uuid: 5ba49173-b57f-4589-9184-7465b930f2a8
+langcode: en
+status: true
+dependencies:
+  module:
+    - dropzonejs_eb_widget
+name: dropzonejs
+label: DropzoneJS
+display: iframe
+display_configuration:
+  width: '650'
+  height: '500'
+  link_text: 'Select Images'
+  auto_open: true
+selection_display: no_display
+selection_display_configuration: {  }
+widget_selector: single
+widget_selector_configuration: {  }
+widgets:
+  170654a9-1c81-4b94-90a9-cf3324c276fa:
+    id: dropzonejs
+    uuid: 170654a9-1c81-4b94-90a9-cf3324c276fa
+    label: dropzonejs
+    weight: 2
+    settings:
+      submit_text: 'Select entities'
+      auto_select: false
+      upload_location: 'private://[date:custom:Y]-[date:custom:m]'
+      dropzone_description: 'Drop files here to upload them'
+      max_filesize: 100M
+      extensions: 'jpg jpeg gif png txt doc xls pdf ppt pps odt ods odp'
+      clientside_resize: false
+      resize_width: null
+      resize_height: null
+      resize_quality: 1.0
+      resize_method: contain
+      thumbnail_method: contain

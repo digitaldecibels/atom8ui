@@ -1,0 +1,23 @@
+uuid: 92ffc95e-4271-4a58-96c5-ffe4816a6cbe
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_gross
+    - paragraphs.paragraphs_type.material
+id: paragraph.material.field_gross
+field_name: field_gross
+entity_type: paragraph
+bundle: material
+label: Gross
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: decimal

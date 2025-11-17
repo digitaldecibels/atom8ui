@@ -1,0 +1,19 @@
+uuid: 3636a380-4e59-4846-9b59-1c731e1ef295
+langcode: en
+status: true
+dependencies:
+  module:
+    - link
+    - node
+id: node.field_host
+field_name: field_host
+entity_type: node
+type: link
+settings: {  }
+module: link
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

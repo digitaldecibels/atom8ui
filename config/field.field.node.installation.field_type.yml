@@ -1,0 +1,23 @@
+uuid: 9d268963-c444-43be-9b88-c187d9a0249e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_type
+    - node.type.installation
+  module:
+    - options
+id: node.installation.field_type
+field_name: field_type
+entity_type: node
+bundle: installation
+label: Type
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: n8n
+default_value_callback: ''
+settings: {  }
+field_type: list_string

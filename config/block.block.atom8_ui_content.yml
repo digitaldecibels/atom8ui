@@ -1,0 +1,22 @@
+uuid: 2139c548-c68c-4a17-be5d-5b522818cdcb
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - atom8_ui
+_core:
+  default_config_hash: a0Yyx1GeyKarZ4T_yXQBR_ZFKnXiFLtxAb6gWLd8nr0
+id: atom8_ui_content
+theme: atom8_ui
+region: content
+weight: -1
+provider: null
+plugin: system_main_block
+settings:
+  id: system_main_block
+  label: 'Main page content'
+  label_display: '0'
+  provider: system
+visibility: {  }

@@ -1,0 +1,10 @@
+name: Simple Mail
+type: module
+description: "Email functionality for Drupal, simplified."
+core_version_requirement: ^8 || ^9 || ^10 || ^11
+configure: simple_mail.config
+
+# Information added by Drupal.org packaging script on 2025-03-06
+version: '2.0.2'
+project: 'simple_mail'
+datestamp: 1741289994

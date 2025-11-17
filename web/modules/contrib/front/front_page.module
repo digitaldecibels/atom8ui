@@ -1,0 +1,37 @@
+<?php
+
+/**
+ * @file
+ * This module allows the site admin to set advanced front page settings.
+ *
+ * This version is for Drupal 8.
+ * Earlier versions can be found at http://drupal.org/project/front.
+ *
+ * If you have any ideas/patches or requests,
+ * please post them at http://drupal.org/project/issues/front.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function front_page_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'front_page.settings':
+      return t('<p>Setup custom front pages for your site.</p>');
+
+    case 'help.page.front_page':
+      return t('<p>If a HOME link is set, the &lt;front&gt; placeholder will be replaced with this value instead of the standard front page.</p>');
+  }
+}
+
+/**
+ * Implements hook_user_role_delete().
+ */
+function front_page_user_role_delete($role) {
+  // Delete Front configuration for the role being deleted.
+  $config = \Drupal::configFactory()->getEditable('front_page.settings');
+  $config->clear('rid_' . $role->id());
+  $config->save();
+}

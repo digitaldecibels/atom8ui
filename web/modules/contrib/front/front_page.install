@@ -1,0 +1,35 @@
+<?php
+
+/**
+ * @file
+ * Front page module install/schema/update hooks.
+ */
+
+/**
+ * Update config to have a valid schema.
+ */
+function front_page_update_8101() {
+  $config_factory = \Drupal::configFactory();
+
+  $config = $config_factory->getEditable('front_page.settings');
+
+  $config->set('enabled', $config->get('enable'));
+  $config->clear('enable');
+
+  $keys = array_keys($config->get());
+  foreach ($keys as $key) {
+    if (str_starts_with($key, 'rid_')) {
+      $role = substr($key, strlen('rid_'));
+      $role_config = $config->get($key);
+
+      // Fix wrong spelling.
+      $role_config['weight'] = $role_config['weight'];
+      unset($role_config['weight']);
+
+      $config->set("roles.{$role}", $role_config);
+      $config->clear($key);
+    }
+  }
+
+  $config->save();
+}

@@ -1,0 +1,15 @@
+<?php
+
+/**
+ * @file
+ * Contains editablefields.module.
+ */
+
+/**
+ * Implements hook_field_formatter_info_alter().
+ */
+function editablefields_field_formatter_info_alter(array &$info) {
+  /** @var \Drupal\editablefields\services\EditableFieldsHelper $service */
+  $service = \Drupal::service('editablefields.helper');
+  $service->formatterInfoAlter($info);
+}

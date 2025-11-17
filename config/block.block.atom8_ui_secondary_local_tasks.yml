@@ -1,0 +1,22 @@
+uuid: 7f7821f3-bd16-4fa0-8c6e-ba5d83af682b
+langcode: en
+status: true
+dependencies:
+  theme:
+    - atom8_ui
+_core:
+  default_config_hash: 2L0geP-ixCbCkEpW6BVF6H7vDUZN4ea07_Y9CociQm4
+id: atom8_ui_secondary_local_tasks
+theme: atom8_ui
+region: header
+weight: -2
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: 'Secondary tabs'
+  label_display: '0'
+  provider: core
+  primary: false
+  secondary: true
+visibility: {  }

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Packing Slip #{{ order.id }}</title>
+		<style>
+
+			body
+			{font-family:sans-serif}
+
+			table
+			{width:100%}
+
+			.item-table
+			{width:100%;border-collapse:collapse;margin-top:20px}
+			.item-table th,
+			.item-table td
+			{border:1px solid #000;padding:8px;text-align:left}
+
+			.item-table td
+			{background:rgb(245, 248, 255)}
+
+			.code
+			{width:100px}
+
+			.code img
+			{width:100%;height:auto;float:right;margin-bottom:10px}
+
+			.qr
+			{text-align:center;width:200px;overflow:hidden}
+
+            .footer{text-align:center}
+		</style>
+	</head>
+	<body>
+
+		<table>
+
+			<tr>
+				<td>
+					{% if logo %}
+						<a href="{{ path('<front>') }}" title="{{ 'Home'|t }}" rel="home">
+							<img src="{{ logo }}" alt="{{ 'Home'|t }}"/>
+						</a>
+					{% endif %}
+				</td>
+				<td class="qr">
+
+
+					{{ drupal_field('field_code', 'node', node.id ) }}
+
+
+
+				</td>
+
+			</tr>
+
+
+		</table>
+
+
+		<h2>Lot {{ node.id()}}</h2>
+		<table class="item-table">
+			<thead>
+				<tr>
+					<th>Weight</th>
+					<th>Materials</th>
+					<th>Packages</th>
+					<th>Customer</th>
+				</tr>
+			</thead>
+			<tbody>
+
+				<tr>
+					<td>{{ node.field_lot_weight.0.value }}
+						LBS</td>
+					<td>
+
+						{{ drupal_field('field_materials', 'node', node.id ) }}
+
+					</td>
+					<td>{{ node.field_packages|length }}</td>
+					<td>
+
+
+						{{  node.uid.0.entity.field_first_name.value }}
+						{{  node.uid.0.entity.field_last_name.value }}<br>
+						{{  node.uid.0.entity.field_address.organization }}<br>
+						<strong>Phone:</strong>
+						{{  node.uid.0.entity.field_phone.value }}<br>
+
+						<p>
+							{% if  node.uid.0.entity.field_address.address_line1 %}
+								{{  node.uid.0.entity.field_address.address_line1}}<br>
+							{% endif %}
+							{% if  node.uid.0.entity.field_address.address_line2 %}
+								{{  node.uid.0.entity.field_address.address_line2}}<br>
+							{% endif %}
+							{% if  node.uid.0.entity.field_address.address_line3 %}
+								{{  node.uid.0.entity.field_address.address_line3}}<br>
+							{% endif %}
+
+
+							{{  node.uid.0.entity.field_address.locality}},
+							{{  node.uid.0.entity.field_address.administrative_area}}
+							{{  node.uid.0.entity.field_address.postal_code}}<br>
+
+
+						</p>
+
+						<p>
+							<strong>Payment Method:</strong>
+							{{  node.uid.0.entity.field_payment_method.value }}<br></p>
+					</td>
+				</tr>
+
+			</tbody>
+		</table>
+
+
+		{{ config.packing_slip.value|raw}}
+
+<div class="footer">
+Created:
+{{ node.created.value|date('m-d-y')}}
+</div>
+
+	</body>
+</html>

@@ -1,0 +1,5 @@
+name: Cash for Computer Scrap
+type: module
+description: Custom functionality and api integration
+package: Custom
+core_version_requirement: ^10 || ^11

@@ -1,0 +1,23 @@
+uuid: 3e8ee62e-c148-4a1a-934b-47212094d80b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_width
+    - paragraphs.paragraphs_type.package
+id: paragraph.package.field_width
+field_name: field_width
+entity_type: paragraph
+bundle: package
+label: Width
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: inches
+field_type: decimal

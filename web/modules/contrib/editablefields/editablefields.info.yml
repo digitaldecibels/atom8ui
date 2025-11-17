@@ -1,0 +1,10 @@
+name: 'Editable Fields'
+type: module
+description: 'Allows you to make some fields editable from the display.'
+core_version_requirement: ^8 || ^9 || ^10
+package: 'Fields'
+
+# Information added by Drupal.org packaging script on 2024-02-13
+version: '1.0.2'
+project: 'editablefields'
+datestamp: 1707846365

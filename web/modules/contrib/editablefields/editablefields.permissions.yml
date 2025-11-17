@@ -1,0 +1,7 @@
+use editablefields:
+  title: 'Use editablefields'
+  description: 'Use editable fields.'
+
+administer editablefields:
+  title: 'Administer editablefields'
+  description: 'Administer editable fields.'

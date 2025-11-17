@@ -1,0 +1,22 @@
+uuid: 6756eea3-a7e5-4c21-9525-089f2017abd9
+langcode: en
+status: true
+dependencies:
+  module:
+    - help
+  theme:
+    - atom8_ui
+_core:
+  default_config_hash: jccFSSVqV0WCDb6NtML1VWAWTtDbZ-zn5YgTRMgMrIM
+id: atom8_ui_help
+theme: atom8_ui
+region: header
+weight: -5
+provider: null
+plugin: help_block
+settings:
+  id: help_block
+  label: Help
+  label_display: '0'
+  provider: help
+visibility: {  }

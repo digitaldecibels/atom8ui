@@ -1,0 +1,16 @@
+description: Supports diff's automated tests.
+dependencies:
+  - diff:diff
+  - drupal:filter
+  - drupal:editor
+  - drupal:entity_test
+  - drupal:node
+hidden: true
+name: Diff tests
+package: Testing
+type: module
+
+# Information added by Drupal.org packaging script on 2025-06-02
+version: '2.0.0-beta4'
+project: 'diff'
+datestamp: 1748842107

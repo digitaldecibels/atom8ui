@@ -1,0 +1,30 @@
+uuid: 02a15225-92d9-4554-b15e-3e2a2b6da03f
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - user
+id: user.field_payment_method
+field_name: field_payment_method
+entity_type: user
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: paypal
+      label: Paypal
+    -
+      value: check
+      label: Check
+    -
+      value: ach
+      label: ACH
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

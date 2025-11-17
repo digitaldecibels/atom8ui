@@ -1,0 +1,26 @@
+<?php
+
+/**
+ * @file
+ * Contains entity_delete.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function entity_delete_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the entity_delete module.
+    case 'help.page.entity_delete':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Entity Delete module is for deleting content of any entity types in bulk.') . '</p>';
+      return $output;
+
+    default:
+      return;
+
+  }
+}

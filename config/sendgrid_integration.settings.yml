@@ -1,0 +1,14 @@
+_core:
+  default_config_hash: g4qz7cPnloXFwtnLYfIKI2VS0gf_UFOz_I2uQiiulC8
+apikey: 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
+test_defaults:
+  to: rick@digitaldecibels.com
+  subject: 'Test Email from SendGrid Module'
+  body:
+    value: 'Test Message for SendGrid.'
+    format: plain_text
+  from_name: ''
+  to_name: ''
+  reply_to: ''
+trackopens: 0
+trackclicks: 0

@@ -1,0 +1,22 @@
+uuid: ede7ea88-c50d-4a95-8eda-e9cc04a40ec4
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - atom8_ui
+_core:
+  default_config_hash: '-Ac3ISpIT0PQ-whzD7_dw0SdKi6dAbRFNWdSjOiVDqg'
+id: atom8_ui_messages
+theme: atom8_ui
+region: content
+weight: -2
+provider: null
+plugin: system_messages_block
+settings:
+  id: system_messages_block
+  label: 'Status messages'
+  label_display: '0'
+  provider: system
+visibility: {  }

@@ -1,0 +1,31 @@
+name: Atom8 UI
+type: theme
+description: "Custom Drupal 10 Theme"
+package: Core
+version: VERSION
+core_version_requirement:   ^10 || ^11
+base theme: false
+libraries:
+  - atom8_ui/global-styling
+# Regions
+regions:
+  header : "Header"
+  navigation: "Navigation"
+  rotator : "Rotator"
+  feature : "Feature"
+  content : "Content"
+  tabs : "Tabs"
+  sidebar : "Sidebar"
+  property_filters : "Property Filters"
+  information_request : "Information Request"
+  tout : "Tout"
+  footer_1 : "Footer 1"
+  footer_2 : "Footer 2"
+  footer_3 : "Footer 3"
+
+
+
+
+
+
+

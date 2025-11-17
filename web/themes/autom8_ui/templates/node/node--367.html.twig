@@ -1,0 +1,93 @@
+<div x-data="installationsTable()" x-init="fetchData">
+
+
+	<p x-show="loading">Loading data...</p>
+
+	<p x-show="error" style="color: red;">Error:
+		<span x-text="error"></span>
+	</p>
+
+	<table x-show="installations.length > 0 && !loading">
+		<thead>
+			<tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+				<th class="px-4 py-3">Title</th>
+				<th class="px-4 py-3">Type</th>
+				<th class="px-4 py-3">Host</th>
+			</tr>
+		</thead>
+		<tbody>
+			<template x-for="installation in installations" :key="installation.id">
+				<tr>
+					<td class="px-4 py-3 text-sm" x-text="installation.title"></td>
+					<td class="px-4 py-3 text-sm">
+
+						<div class="flex items-center ">
+							<img class="w-10 h-auto" src="{{ theme_path }}/images/n8n.svg" :alt="installation.field_type"/>
+
+							<span x-text="installation.field_type"></span>
+						</div>
+
+
+					</td>
+					<td class="px-4 py-3 text-sm">
+
+						<a class="text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline" target="_blank" :href="installation.field_host" x-text="installation.field_host"></a>
+
+					</td>
+				</tr>
+			</template>
+		</tbody>
+	</table>
+
+</div>
+
+
+<script>
+	// Helper function to decode HTML entities using the browser's DOM
+function decodeHtml(html) { // Create a temporary textarea element
+const txt = document.createElement("textarea");
+// Set the encoded string as the innerHTML. The browser automatically decodes entities.
+txt.innerHTML = html;
+// Return the decoded text value
+return txt.value;
+}
+
+function installationsTable() {
+return {
+installations: [], loading: true, error: null,
+
+// Function to fetch the data
+async fetchData() {
+try {
+const response = await fetch('/rest/installations');
+
+if (! response.ok) {
+throw new Error(`HTTP error! status: ${
+response.status
+}`);
+}
+
+const data = await response.json();
+
+// 1. Map over the fetched data to decode the 'title' property
+const decodedData = data.map(installation => { // Create a new object to avoid modifying the original data directly (good practice)
+return {
+...installation,
+// Apply the decoding function to the title
+title: decodeHtml(installation.title)
+};
+});
+
+// 2. Store the decoded data
+this.installations = decodedData;
+
+} catch (e) {
+console.error("Fetch error:", e);
+this.error = e.message;
+} finally {
+this.loading = false;
+}
+}
+}
+}
+</script>

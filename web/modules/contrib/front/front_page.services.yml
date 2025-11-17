@@ -1,0 +1,12 @@
+services:
+  front_page.event_subscriber:
+    class: Drupal\front_page\EventSubscriber\FrontPageSubscriber
+    arguments: ['@state', '@config.factory', '@current_user', '@page_cache_kill_switch', '@path.matcher', '@language_manager']
+    tags:
+      - {name: event_subscriber}
+
+  front_page.front_page_path_processor:
+    class: Drupal\front_page\FrontPagePathProcessor
+    arguments: ['@config.factory']
+    tags:
+      - {name: path_processor_outbound}

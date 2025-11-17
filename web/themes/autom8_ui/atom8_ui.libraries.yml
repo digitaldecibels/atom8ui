@@ -1,0 +1,21 @@
+global-styling:
+  version: 1.x
+  css:
+    theme:
+      //fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap: { type: external, minified: true }
+      css/tailwind.output.css: {}
+  js:
+    //cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js: { type: external, minified: true, attributes: { defer: true } }
+    js/init-alpine.js: {}
+
+charts:
+  version: 1.x
+  css:
+    theme:
+      //cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css: { type: external, minified: true }
+  js:
+    //cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js: { type: external, minified: true, attributes: { defer: true } }
+    js/charts-lines.js: { attributes: { defer: true } }
+    js/charts-pie.js: { attributes: { defer: true } }
+  dependencies:
+    - THEMENAME/global-styling

@@ -1,0 +1,26 @@
+uuid: c7582d4b-881e-4cf5-857a-7686e1f202af
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.installation.field_api_key
+    - field.field.node.installation.field_host
+    - field.field.node.installation.field_type
+    - node.type.installation
+  module:
+    - user
+id: node.installation.teaser
+targetEntityType: node
+bundle: installation
+mode: teaser
+content:
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  field_api_key: true
+  field_host: true
+  field_type: true

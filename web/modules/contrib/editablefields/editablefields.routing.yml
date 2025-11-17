@@ -1,0 +1,7 @@
+editablefields.get_from:
+  path: '/editablefields/get-form/{entity_type}/{entity_id}/{form_mode}/{field_name}/{display_mode}/{selector}'
+  defaults:
+    _title: 'Editablefields: get form'
+    _controller: '\Drupal\editablefields\Controller\EditablefieldsController::getForm'
+  requirements:
+    _permission: 'access content'

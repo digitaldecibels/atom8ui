@@ -1,0 +1,4 @@
+services:
+  editablefields.helper:
+    class: Drupal\editablefields\services\EditableFieldsHelper
+    arguments: ['@plugin.manager.field.field_type', '@form_builder', '@class_resolver', '@current_user', '@entity_display.repository']

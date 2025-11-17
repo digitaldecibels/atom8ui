@@ -1,0 +1,10 @@
+{
+    "livereload.debug": false,
+    "livereload.port": 35729,
+    "livereload.useHTTPS": {},
+    "livereload.applyCSSLive": true,
+    "livereload.applyImageLive": true,
+    "livereload.delayForUpdate": 0,
+    "livereload.exts": "html,htm,css,js,png,gif,jpg,php,php5,py,rb,erb,coffee,twig",
+    "livereload.exclusions": ".DS_Store,.gitignore,.git,.svn,.hg"
+}

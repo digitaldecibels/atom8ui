@@ -1,0 +1,120 @@
+<?php
+
+/**
+ * @file
+ * A working example for hook_post_action module.
+ */
+
+use Drupal\Core\Entity\EntityInterface;
+
+/**
+ * Implements hook_entity_postsave().
+ */
+function hook_post_action_example_entity_postsave(EntityInterface $entity, $op) {
+  $id = $entity->id();
+  $entity_type = $entity->getEntityTypeId();
+  $op_past_tense = _hook_post_action_example_op_past_tense($op);
+
+  \Drupal::logger('hook_post_action_test')
+    ->info("The {$op_past_tense} entity {$entity_type} id is {$id} from " . __FUNCTION__);
+}
+
+/**
+ * Implements hook_entity_postinsert().
+ */
+function hook_post_action_example_entity_postinsert(EntityInterface $entity) {
+  $id = $entity->id();
+  $entity_type = $entity->getEntityTypeId();
+
+  \Drupal::logger('hook_post_action_test')
+    ->info("The inserted entity {$entity_type} id is {$id} from " . __FUNCTION__);
+}
+
+/**
+ * Implements hook_entity_postupdate().
+ */
+function hook_post_action_example_entity_postupdate(EntityInterface $entity) {
+  $id = $entity->id();
+  $entity_type = $entity->getEntityTypeId();
+
+  \Drupal::logger('hook_post_action_test')
+    ->info("The updated entity {$entity_type} id is {$id} from " . __FUNCTION__);
+}
+
+/**
+ * Implements hook_entity_postdelete().
+ */
+function hook_post_action_example_entity_postdelete(EntityInterface $entity) {
+  $id = $entity->id();
+  $entity_type = $entity->getEntityTypeId();
+
+  \Drupal::logger('hook_post_action_test')
+    ->info("The deleted entity {$entity_type} id is {$id} from " . __FUNCTION__);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_postsave().
+ */
+function hook_post_action_example_node_postsave(EntityInterface $entity, $op) {
+  $id = $entity->id();
+  $bundle = $entity->bundle();
+  $op_past_tense = _hook_post_action_example_op_past_tense($op);
+
+  \Drupal::logger('hook_post_action_test')
+    ->info("The {$op_past_tense} node {$bundle} id is {$id} from " . __FUNCTION__);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_postinsert().
+ */
+function hook_post_action_example_node_postinsert(EntityInterface $entity) {
+  $id = $entity->id();
+  $bundle = $entity->bundle();
+
+  \Drupal::logger('hook_post_action_test')
+    ->info("The inserted node {$bundle} id is {$id} from " . __FUNCTION__);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_postupdate().
+ */
+function hook_post_action_example_node_postupdate(EntityInterface $entity) {
+  $id = $entity->id();
+  $bundle = $entity->bundle();
+
+  \Drupal::logger('hook_post_action_test')
+    ->info("The updated node {$bundle} id is {$id} from " . __FUNCTION__);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_postdelete().
+ */
+function hook_post_action_example_node_postdelete(EntityInterface $entity) {
+  $id = $entity->id();
+  $bundle = $entity->bundle();
+
+  \Drupal::logger('hook_post_action_test')
+    ->info("The deleted node {$bundle} id is {$id} from " . __FUNCTION__);
+}
+
+/**
+ * Helper function to get the past tense of a given operation.
+ *
+ * @param string $op
+ *   Operation on an entity.
+ *
+ * @return string
+ *   The best match for the past tense of the given operation.
+ */
+function _hook_post_action_example_op_past_tense(string $op): string {
+  switch ($op) {
+    case 'insert':
+      return 'inserted';
+    case 'update':
+      return 'updated';
+    case 'delete':
+      return 'deleted';
+    default:
+      return 'saved';
+  }
+}

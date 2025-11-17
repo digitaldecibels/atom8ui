@@ -1,0 +1,113 @@
+uuid: c440e1b7-9b72-4b5e-adc7-506c0a107fc7
+langcode: en
+status: true
+dependencies:
+  module:
+    - content_moderation
+id: lot_status
+label: 'Lot Status'
+type: content_moderation
+type_settings:
+  states:
+    draft:
+      label: Draft
+      weight: -4
+      published: false
+      default_revision: false
+    drop_off_schedule_pending:
+      label: 'Drop Off Schedule Pending'
+      weight: 4
+      published: true
+      default_revision: true
+    drop_off_scheduled:
+      label: 'Drop Off Scheduled'
+      weight: 5
+      published: true
+      default_revision: true
+    package_processed:
+      label: 'Package Processed'
+      weight: 1
+      published: true
+      default_revision: true
+    package_received:
+      label: 'Package Received'
+      weight: 0
+      published: true
+      default_revision: true
+    payment_made:
+      label: 'Payment Made'
+      weight: 2
+      published: true
+      default_revision: true
+    pending_approval:
+      label: 'Pending Approval'
+      weight: 6
+      published: false
+      default_revision: true
+    pending_waiting_for_package:
+      label: 'Pending - Waiting for Package'
+      weight: -3
+      published: true
+      default_revision: true
+    pickup_schedule_pending:
+      label: 'Pickup Schedule Pending'
+      weight: -2
+      published: true
+      default_revision: true
+    pickup_scheduled:
+      label: 'Pickup Scheduled'
+      weight: -1
+      published: true
+      default_revision: true
+    published:
+      label: Published
+      weight: 3
+      published: true
+      default_revision: true
+  transitions:
+    package_processed:
+      label: 'Package Processed'
+      from:
+        - package_processed
+        - package_received
+      to: package_processed
+      weight: 4
+    package_received:
+      label: 'Package Received'
+      from:
+        - package_received
+        - pending_waiting_for_package
+        - pickup_scheduled
+      to: package_received
+      weight: 3
+    payment_made:
+      label: 'Payment Made'
+      from:
+        - package_processed
+        - payment_made
+      to: payment_made
+      weight: 5
+    pickup_scheduled:
+      label: 'Pickup Scheduled'
+      from:
+        - pickup_schedule_pending
+        - pickup_scheduled
+      to: pickup_scheduled
+      weight: 2
+    waiting_for_pickup_schedule:
+      label: Pending
+      from:
+        - pending_approval
+        - pending_waiting_for_package
+        - pickup_schedule_pending
+      to: pending_waiting_for_package
+      weight: 0
+    waiting_for_pickup_schedule2:
+      label: 'Waiting for Pickup Schedule'
+      from:
+        - pending_waiting_for_package
+        - pickup_schedule_pending
+      to: pickup_schedule_pending
+      weight: 1
+  entity_types: {  }
+  default_moderation_state: pending_approval

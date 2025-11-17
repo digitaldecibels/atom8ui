@@ -1,0 +1,51 @@
+uuid: 3a44399c-525a-44ca-ad0a-89168c9b13e3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.installation.field_api_key
+    - field.field.node.installation.field_host
+    - field.field.node.installation.field_type
+    - node.type.installation
+  module:
+    - link
+    - options
+    - user
+id: node.installation.default
+targetEntityType: node
+bundle: installation
+mode: default
+content:
+  field_api_key:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 105
+    region: content
+  field_host:
+    type: link
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 103
+    region: content
+  field_type:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 104
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden: {  }

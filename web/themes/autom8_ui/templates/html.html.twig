@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html :class="{ 'theme-dark': dark }" x-data="data()" lang="en">
+	<head>
+		<head-placeholder token="{{ placeholder_token|raw }}">
+
+			<title>
+				{{ head_title|safe_join(' | ') }}
+			</title>
+			<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+			<css-placeholder token="{{ placeholder_token|raw }}">
+				<js-placeholder token="{{ placeholder_token|raw }}">
+
+				</head>
+				<body class="
+					{{ logged_in ? 'user-logged-in' : 'logged-out' }}
+					{{ not root_path ? 'home' : 'path-' ~ root_path|clean_class }}
+					{{ node_type ? 'page-node-type-' ~ node_type|clean_class }}
+					">
+		 
+					{{ page_top }}
+					{{ page }}
+					{{ page_bottom }}
+					<js-bottom-placeholder token="{{ placeholder_token|raw }}"></body>
+
+
+				</body>
+			</html>

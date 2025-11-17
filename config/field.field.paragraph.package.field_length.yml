@@ -1,0 +1,23 @@
+uuid: 1c50c2e3-b54c-4b54-8af3-b0065ba082aa
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_length
+    - paragraphs.paragraphs_type.package
+id: paragraph.package.field_length
+field_name: field_length
+entity_type: paragraph
+bundle: package
+label: Length
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: inches
+field_type: decimal

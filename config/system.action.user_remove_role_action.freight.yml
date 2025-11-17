@@ -1,0 +1,14 @@
+uuid: 26296440-c4a3-43bc-86ad-71a704ec522c
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.freight
+  module:
+    - user
+id: user_remove_role_action.freight
+label: 'Remove the Freight role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: freight

@@ -1,0 +1,14 @@
+<?php
+
+
+function atom8_ui_preprocess(&$variables, $hook) {
+  // base path in all templates
+  $variables['base_path'] = base_path();
+
+  $variables['theme_path'] = \Drupal::service('theme.manager')
+    ->getActiveTheme()
+    ->getPath();
+
+
+ 
+}

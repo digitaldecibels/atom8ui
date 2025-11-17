@@ -1,0 +1,4 @@
+name: atom8ui
+recipe: drupal10
+config:
+  webroot: /web

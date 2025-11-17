@@ -1,0 +1,13 @@
+_core:
+  default_config_hash: IgOVnECx6lbVt6JVFnadoEEugneDf3UblPZnOzov43Q
+mode: simple
+ignored_config_entities:
+  - cash_for_computer_scrap.settings
+  - devel.settings
+  - devel.toolbar.settings
+  - mimemail.settings
+  - minifyhtml.config
+  - system.maintenance
+  - system.menu.devel
+  - system.performance
+  - system.site

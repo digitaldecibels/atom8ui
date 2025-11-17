@@ -1,0 +1,19 @@
+uuid: b946f0c2-7de2-4feb-b9e3-f137b3adab5c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_api_key
+    - node.type.installation
+id: node.installation.field_api_key
+field_name: field_api_key
+entity_type: node
+bundle: installation
+label: 'API Key'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

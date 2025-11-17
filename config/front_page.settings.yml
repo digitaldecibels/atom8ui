@@ -1,0 +1,15 @@
+enabled: true
+disable_for_administrators: false
+roles:
+  anonymous:
+    enabled: null
+    weight: 0
+    path: /node/93
+  authenticated:
+    enabled: true
+    weight: 0
+    path: /my-lots
+  administrator:
+    enabled: null
+    weight: 0
+    path: /lot-manager

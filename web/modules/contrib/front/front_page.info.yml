@@ -1,0 +1,10 @@
+name: Front Page
+description: 'Allows role based custom front page configuration.'
+type: module
+configure: front_page.settings
+core_version_requirement: ^10 || ^11
+
+# Information added by Drupal.org packaging script on 2025-04-30
+version: '10.0.0-beta1'
+project: 'front'
+datestamp: 1746023930

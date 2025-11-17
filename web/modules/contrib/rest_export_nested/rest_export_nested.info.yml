@@ -1,0 +1,12 @@
+name: REST Export Nested
+type: module
+description: 'Extends the REST Export views display to support JSON within fields.'
+core_version_requirement: ^10.1 || ^11
+dependencies:
+  - drupal:rest
+  - drupal:views
+
+# Information added by Drupal.org packaging script on 2025-01-30
+version: '8.x-1.3'
+project: 'rest_export_nested'
+datestamp: 1738248526

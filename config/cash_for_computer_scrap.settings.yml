@@ -1,0 +1,13 @@
+email_footer:
+  value: '<p>Thank you,</p><p>-CFCS</p><p><a href="https://base-url]/[entity:id]">[site:base-url]</a></p>'
+  format: full_html
+sms_footer:
+  value: '<p>-CFCS</p>'
+  format: full_html
+twilio_sid: AC16adf28db71f470e39afa538909a33f9
+twilio_auth_token: cc8971b3993e78120cd54b944d720138
+twilio_from_number: '15702794905'
+business_address:
+  value: '<p><strong>CFCS, LLC</strong><br>29601 Solon Road<br>Solon, Ohio 44139</p>'
+  format: full_html
+business_phone: 216-424-3400
