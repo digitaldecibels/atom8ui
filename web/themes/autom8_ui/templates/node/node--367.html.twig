@@ -1,3 +1,9 @@
+<div class="w-full overflow-hidden rounded-lg shadow-xs">
+
+
+<div class="w-full overflow-x-auto">
+
+
 <div x-data="installationsTable()" x-init="fetchData">
 
 
@@ -40,7 +46,8 @@
 	</table>
 
 </div>
-
+</div>
+</div>
 
 <script>
 	// Helper function to decode HTML entities using the browser's DOM
@@ -91,3 +98,113 @@ this.loading = false;
 }
 }
 </script>
+
+
+{# workflows  #}
+
+
+<div x-data="n8nDashboard()" x-init="fetchData" x-cloak>
+
+
+	<div x-show="isLoading" class="card">
+		<p>Loading workflows and logs...</p>
+	</div>
+
+	<div x-show="error" class="card error">
+		<p>Error:
+			<span x-text="error"></span>
+		</p>
+		<p>Double-check your **Base URL** and **API Key**.</p>
+	</div>
+
+	<template x-if="!isLoading && !error">
+		<div>
+			<div class="card">
+				<h2>📋 Workflows (<span x-text="workflows.length"></span>)</h2>
+				<template x-for="workflow in workflows" :key="workflow.id">
+					<div class="workflow-item">
+						<strong x-text="workflow.name"></strong>
+						-
+						<span :style="{ color: workflow.active ? 'green' : 'gray' }" x-text="workflow.active ? 'Active' : 'Inactive'"></span>
+						<small>(ID:
+							<span x-text="workflow.id"></span>)</small>
+					</div>
+				</template>
+				<p x-show="workflows.length === 0">No workflows found.</p>
+			</div>
+
+			<div class="card">
+				<h2>⏳ Recent Execution Logs (<span x-text="executions.length"></span>)</h2>
+				<template x-for="execution in executions" :key="execution.id">
+					<div class="log-item">
+						<strong x-text="execution.workflow.name"></strong>
+						<span :style="{ color: execution.status === 'success' ? 'green' : 'red' }">
+							(<span x-text="execution.status"></span>)
+						</span>
+						on
+						<span x-text="new Date(execution.startedAt).toLocaleString()"></span>
+					</div>
+				</template>
+				<p x-show="executions.length === 0">No recent logs found.</p>
+			</div>
+		</div>
+	</template>
+</div></div><script>
+function n8nDashboard() {
+return {
+// Configuration
+baseUrl: 'https://n8n.digitaldecibels.com', // Replace with your default URL
+apiKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiMTRkODNjZS1lZTViLTRhYTktYWFiMi03MmJhZTExZmE3OWUiLCJpc3MiOiJuOG4iLCJhdWQiOiJwdWJsaWMtYXBpIiwiaWF0IjoxNzYzNDAxMDA3fQ.LouJnqhRZQfDKcEEc6K_NzpGzt8jP-fbaqEnTnY9VnQ',
+// NEVER expose this in production code
+
+// State
+workflows: [],
+executions: [],
+isLoading: false,
+error: '',
+
+// Fetch function
+async fetchData() {
+if (!this.baseUrl || !this.apiKey) {
+this.error = 'Please enter both the Base URL and the API Key.';
+return;
+}
+
+this.isLoading = true;
+this.error = '';
+this.workflows = [];
+this.executions = [];
+
+const headers = {
+'Accept': '*/*',
+'X-N8N-API-KEY': this.apiKey
+};
+
+// --- 1. Fetch Workflows ---
+const workflowUrl = `${
+this.baseUrl.replace(/\/$/, "")
+}/api/v1/workflows`;
+
+
+try {
+const workflowResponse = await fetch(workflowUrl, {headers});
+
+
+if (! workflowResponse.ok) {
+throw new Error(`HTTP error fetching workflows! Status: ${
+workflowResponse.status
+}`);
+}
+const data = await workflowResponse.json();
+this.workflows = data.data;
+} catch (e) {
+this.error = `Failed to fetch workflows: ${
+e.message
+}`;
+this.isLoading = false;
+return;
+}
+
+}
+}
+}</script>

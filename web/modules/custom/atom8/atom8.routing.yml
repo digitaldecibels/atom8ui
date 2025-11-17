@@ -1,0 +1,14 @@
+ 
+
+# cash_for_computer_scrap.packing_slip:
+#   path: '/packing-slip/{node}'
+#   defaults:
+#     _controller: '\Drupal\cash_for_computer_scrap\Controller\PackingSlipController::generatePdf'
+#     _title: 'Packing Slip'
+#   requirements:
+#     # Use the correct class name here
+#    _lot_access: 'TRUE'
+#   options:
+#     parameters:
+#       node:
+#         type: entity:node

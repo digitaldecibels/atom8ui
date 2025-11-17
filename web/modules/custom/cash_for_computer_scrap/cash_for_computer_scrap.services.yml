@@ -1,9 +1,0 @@
-services:
-  cash_for_computer_scrap.fedex_api:
-    class: Drupal\cash_for_computer_scrap\FedExApi\FedExRateService
-    arguments: ['@http_client', '@config.factory', '@logger.factory']
-  cash_for_computer_scrap.lot_access_checker:
-    class: Drupal\cash_for_computer_scrap\Access\LotAccessCheck
-    tags:
-      - { name: access_check, applies_to: _lot_access }
-    arguments: ['@current_user']

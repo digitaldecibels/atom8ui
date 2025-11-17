@@ -1,6 +1,0 @@
-
-calendly:
-  version: VERSION
-  js:
-   //assets.calendly.com/assets/external/widget.js: {}
-   js/schedule-drop-off.js: {}
