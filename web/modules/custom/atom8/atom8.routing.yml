@@ -20,14 +20,24 @@ atom8.workflows:
 
 # In modules/custom/atom8/atom8.routing.yml
 
-atom8.assign_workflow:
-  # Define a simple path without path arguments
-  path: '/assign/workflow/create'
+atom8.add_node_to_group:
+  path: '/group/{gid}/add-node/{nid}'
   defaults:
-    _controller: '\Drupal\atom8\Controller\AssignWorkflowController::assign'
-    _title: 'Assign Workflow'
+    _controller: 'Drupal\atom8\Controller\AddToGroupController::addNode'
+    _title: 'Add Node to Group'
   requirements:
-    # _permission: 'access content'
-  options:
-    _format: json # This tells Drupal to expect a JSON payload
-    _method: POST # Enforce POST method
+    _permission: 'access content'
+    gid: \d+
+    nid: \d+
+  methods: [GET, POST]
+
+atom8.add_user_to_group:
+  path: '/group/{gid}/add-user/{uid}'
+  defaults:
+    _controller: 'Drupal\atom8\Controller\AddToGroupController::addUser'
+    _title: 'Add User to Group'
+  requirements:
+    _permission: 'access content'
+    uid: \d+
+    gid: \d+
+  methods: [GET, POST]

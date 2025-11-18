@@ -230,7 +230,11 @@
 
 
 
-														<button class="flex opacity-0 group-hover:opacity-100" @click="removeWorkflow(client, workflow)">
+														<button class="flex opacity-0 group-hover:opacity-100"  @click="removeWorkflow(client, workflow)"
+
+														>
+
+
 														<svg class="w-3 h-3" fill="currentColor" id='Trash_24' width='24' height='24' viewbox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'><rect width='24' height='24' stroke='none' fill='#000000' opacity='0'/>
 														<g transform="matrix(0.87 0 0 0.87 12 12)">
 														<path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4;   fill-rule: nonzero; opacity: 1;" transform=" translate(-15, -14.5)" d="M 13 3 C 12.732430633846345 2.996368577261966 12.47456599490831 3.1001168838017876 12.284068139451957 3.288045380846545 C 12.093570283995604 3.475973877891302 11.986330115219811 3.7324059923494244 11.986328 4.000000000000001 L 6 4 C 5.639364083422431 3.994899710454515 5.303918635428393 4.184375296169332 5.122112278513483 4.495872849714331 C 4.940305921598572 4.80737040325933 4.940305921598573 5.192629596740671 5.122112278513484 5.504127150285671 C 5.303918635428394 5.815624703830669 5.639364083422431 6.005100289545485 6.000000000000001 6 L 24 6 C 24.360635916577568 6.005100289545485 24.696081364571608 5.815624703830668 24.877887721486516 5.50412715028567 C 25.059694078401428 5.19262959674067 25.059694078401428 4.80737040325933 24.877887721486516 4.495872849714331 C 24.696081364571608 4.184375296169332 24.360635916577568 3.994899710454515 24 4 L 18.013672 4 C 18.01366988478019 3.732405992349424 17.906429716004396 3.4759738778913007 17.715931860548043 3.288045380846544 C 17.52543400509169 3.1001168838017867 17.267569366153655 2.9963685772619657 17 3 L 13 3 z M 6 8 L 6 24 C 6 25.105 6.895 26 8 26 L 22 26 C 23.105 26 24 25.105 24 24 L 24 8 L 6 8 z" stroke-linecap="round"/>
@@ -333,76 +337,159 @@
 </div>
 
 
-<div x-data="workflowData()">
-    <button @click="postData" :disabled="loading">
-        <span x-show="!loading">Create Workflow Assignment</span>
-        <span x-show="loading">Submitting...</span>
-    </button>
-    <p x-text="message"></p>
-</div>
-
+{#
 <script>
-    function workflowData() {
-        return {
-            // Data to be posted
-            workflow_id: 101, // Example value
-            install_id: 202,  // Example value
-            group_id: 303,    // Example value
 
-            // UI state
-            loading: false,
-            message: '',
+function workflowData() {
+    return {
+        workflow_id: 101,
+        install_id: 366,
+        group_id: 1,
+        loading: false,
+        message: '',
 
-            // The function to perform the POST request
-            postData() {
-                this.loading = true;
-                this.message = 'Sending data...';
+        getNodeUuid: function(nodeType, nodeId) {
+            var url = '/jsonapi/node/' + nodeType + '?filter[drupal_internal__nid]=' + nodeId;
 
-                const endpoint = 'http://atom8ui.lndo.site/assign/workflow/create';
+            return fetch(url, {
+                credentials: 'same-origin'
+            })
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(data) {
+                if (data.data && data.data[0]) {
+                    return data.data[0].id;
+                }
+                throw new Error('Node ' + nodeId + ' not found');
+            });
+        },
 
-                // Create the data object matching the PHP expectation
-                const data = {
-                    workflow_id: this.workflow_id,
-                    install_id: this.install_id,
-                    group_id: this.group_id
+        postData: function() {
+            var self = this;
+            self.loading = true;
+            self.message = 'Creating workflow...';
+
+            var installationUuid;
+            var csrfToken;
+            var createdNodeId;
+
+            // Step 1: Get installation UUID
+            self.getNodeUuid('installation', self.install_id)
+            .then(function(uuid) {
+                installationUuid = uuid;
+                console.log('Got installation UUID:', installationUuid);
+
+                // Step 2: Get CSRF token
+                return fetch('/session/token', {
+                    credentials: 'same-origin'
+                });
+            })
+            .then(function(response) {
+                return response.text();
+            })
+            .then(function(token) {
+                csrfToken = token;
+                console.log('Got CSRF token');
+
+                // Step 3: Create the workflow node
+                var payload = {
+                    data: {
+                        type: "node--workflow",
+                        attributes: {
+                            title: "zzzzzzWorkflow " + self.workflow_id,
+                            field_id: self.workflow_id,
+                        },
+                        relationships: {
+                            field_install: {
+                                data: {
+                                    type: "node--installation",
+                                    id: installationUuid
+                                }
+                            }
+                        }
+                    }
                 };
 
-                fetch(endpoint, {
+                return fetch('/jsonapi/node/workflow', {
                     method: 'POST',
-                    // The 'Content-Type' header is crucial for the server
-                    // to correctly parse the JSON body.
                     headers: {
-                        'Content-Type': 'application/json',
-                        // You might need other headers (e.g., Authorization)
-                        // depending on your backend setup.
+                        'Content-Type': 'application/vnd.api+json',
+                        'Accept': 'application/vnd.api+json',
+                        'X-CSRF-Token': csrfToken
                     },
-                    // Convert the JavaScript object to a JSON string
-                    body: JSON.stringify(data)
-                })
-                .then(response => {
-                    // Check if the response status is successful (e.g., 200-299)
-                    if (!response.ok) {
-                        // Throw an error to be caught by the catch block
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    // Attempt to parse the response body as JSON
-                    return response.json();
-                })
-                .then(result => {
-                    // Handle successful response
-                    console.log('Success:', result);
-                    this.message = 'Assignment created successfully!';
-                })
-                .catch(error => {
-                    // Handle errors during fetch or network issues
-                    console.error('Error:', error);
-                    this.message = `Failed to create assignment: ${error.message}`;
-                })
-                .finally(() => {
-                    // This runs regardless of success or failure
-                    this.loading = false;
+                    credentials: 'same-origin',
+                    body: JSON.stringify(payload)
                 });
-            }
+            })
+            .then(function(response) {
+                return response.json().then(function(json) {
+                    if (!response.ok) {
+                        var error = json.errors && json.errors[0] ? json.errors[0].detail : 'Failed to create workflow';
+                        throw new Error(error);
+                    }
+                    return json;
+                });
+            })
+            .then(function(workflowResult) {
+                console.log('Workflow created:', workflowResult);
+                createdNodeId = workflowResult.data.attributes.drupal_internal__nid;
+                self.message = 'Workflow created (ID: ' + createdNodeId + '), adding to group...';
+
+                // Step 4: Add workflow to group
+                return fetch('/group/' + self.group_id + '/add-node/' + createdNodeId, {
+                    credentials: 'same-origin'
+                });
+            })
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(result) {
+                console.log('Added to group:', result);
+                self.message = 'Workflow created and added to group successfully! Node ID: ' + createdNodeId;
+            })
+            .catch(function(error) {
+                console.error('Error:', error);
+                self.message = 'Failed: ' + error.message;
+            })
+            .finally(function() {
+                self.loading = false;
+            });
         }
     }
-</script>
+}
+
+</script> #}
+
+
+
+
+
+{#
+fetch('/group/' + groupId + '/add-user/' + userId, {
+    credentials: 'same-origin'
+})
+.then(function(response) {
+    return response.json();
+})
+.then(function(result) {
+    console.log('User added to group:', result);
+});
+
+
+// After creating a workflow node
+fetch('/group/' + groupId + '/add-node/' + nodeId, {
+    credentials: 'same-origin'
+})
+.then(function(response) {
+    return response.json();
+})
+.then(function(result) {
+    console.log('Node added to group:', result);
+});
+
+
+
+#}
+
+
