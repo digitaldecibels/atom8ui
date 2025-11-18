@@ -20,7 +20,7 @@ function atom8_preprocess_my_toggle_published(&$variables) {
 function atom8_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 
 
-dpm($form_id);
+// dpm($form_id);
 
 }
 

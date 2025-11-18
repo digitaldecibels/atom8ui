@@ -2698,6 +2698,14 @@ select{
   min-height: 40px;
 }
 
+.min-h-16{
+  min-height: 4rem;
+}
+
+.min-h-14{
+  min-height: 3.5rem;
+}
+
 .w-0{
   width: 0px;
 }

@@ -1,5 +1,15 @@
 // group/1/content/add/group_membership
 
+function decodeHTML(str) {
+
+    if(str){
+        const doc = new DOMParser().parseFromString(str, "text/html");
+        return doc.documentElement.textContent;
+      }
+    }
+
+
+
 function n8nDashboard() {
   return {
     workflows: [],
@@ -112,16 +122,7 @@ function installationsTable() {
         }
 
         const data = await response.json();
-
-        const decodedData = data.map((installation) => {
-          return {
-            ...installation,
-            title: decodeHtml(installation.title),
-          };
-        });
-
-        this.installations = decodedData;
-
+        this.installations = data;
         this.loading = false;
 
         // Use regular setTimeout instead of $nextTick
@@ -164,14 +165,21 @@ function installationsTable() {
   };
 }
 
+
+
 // user clients
 
 function userClients() {
   return {
-    // --- STATE ---
+
     clients: [],
+    workflows: [],               // All available workflows
+    dashboardWorkflows: [],      // Workflows dropped into dashboard
+    draggedWorkflow: null,       // Holds the workflow currently being dragged
     loading: false,
     error: null,
+    dragOverClientId: null,
+    isDragging: false,
 
     // --- INIT ---
  async fetchData() {
@@ -217,64 +225,31 @@ try {
     this.loading = false;
 },
 
-    // --- DRAGGING ---
-    dragWorkflow(workflow) {
-      this.draggedWorkflow = workflow;
-    },
 
-    dropWorkflow(client) {
-      if (!this.draggedWorkflow) return;
+addToDashboard(mappedWorkflow, client) {
+            console.log('Mapped Workflow received:', mappedWorkflow);
 
-      // Ensure array
-      if (!client.workflows) client.workflows = [];
+            // 1. Check for duplicates using the client's internal ID name (`field_id`)
+            const exists = client.workflows.some(w => w.field_id === mappedWorkflow.field_id);
 
-      // Prevent duplicates
-      const exists = client.workflows.some(
-        (w) => w.id === this.draggedWorkflow.id
-      );
-      if (exists) {
-        this.draggedWorkflow = null;
-        return;
-      }
+            if (exists) {
+                alert('Workflow already assigned.');
+                return;
+            }
 
-      // Add workflow to client
-      client.workflows.push({
-        id: this.draggedWorkflow.id,
-        name: this.draggedWorkflow.name,
-      });
 
-      // Save immediately
-      this.saveClientWorkflows(client);
 
-      this.draggedWorkflow = null;
-    },
 
-    // // --- SAVE CHANGES ---
-    // async saveClientWorkflows(client) {
-    //   try {
-    //     const response = await fetch(
-    //       "/atom8/save-client-workflows/" + client.id,
-    //       {
-    //         method: "POST",
-    //         headers: {
-    //           "Content-Type": "application/json",
-    //           "X-Requested-With": "XMLHttpRequest",
-    //         },
-    //         body: JSON.stringify({
-    //           workflows: client.workflows.map((w) => w.id),
-    //         }),
-    //       }
-    //     );
 
-    //     const result = await response.json();
+            client.workflows.push(mappedWorkflow);
+            this.dragOverClientId = null;
+            this.isDragging = false;
 
-    //     if (!result.status) {
-    //       console.error("Error saving workflows:", result);
-    //     }
-    //   } catch (err) {
-    //     console.error("AJAX save error:", err);
-    //   }
-    // },
+        },
+
 
   };
 }
+
+
+
