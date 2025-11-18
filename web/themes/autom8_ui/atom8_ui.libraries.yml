@@ -14,7 +14,10 @@ admin_dash:
   js:
     js/admin-dash.js: {}
 
-
+apikeys:
+  version: 1.x
+  js:
+    js/apikeys.js: {}
 
 charts:
   version: 1.x

@@ -1,10 +1,7 @@
 {{ attach_library('core/drupal.ajax') }}
 {{ attach_library('core/drupal.dialog.ajax') }}
+{{ attach_library('atom8_ui/apikeys') }}
 
-{{ attach_library('atom8_ui/admin_dash') }}
-
-
-{# <pre x-text="JSON.stringify(clients, null, 2)"></pre> #}
 
 
 <div x-data="installationsTable()" x-init="fetchData()">
