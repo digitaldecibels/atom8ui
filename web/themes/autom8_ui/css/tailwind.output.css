@@ -970,6 +970,14 @@ select{
   top: auto;
 }
 
+.left-1\/2{
+  left: 50%;
+}
+
+.left-1{
+  left: 0.25rem;
+}
+
 .z-0{
   z-index: 0;
 }
@@ -2686,6 +2694,10 @@ select{
   min-height: 60px;
 }
 
+.min-h-\[40px\]{
+  min-height: 40px;
+}
+
 .w-0{
   width: 0px;
 }
@@ -3329,6 +3341,11 @@ select{
 
 .translate-y-px{
   --tw-translate-y: 1px;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.-translate-x-1\/2{
+  --tw-translate-x: -50%;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
@@ -5029,6 +5046,10 @@ select{
 
 .whitespace-normal{
   white-space: normal;
+}
+
+.whitespace-nowrap{
+  white-space: nowrap;
 }
 
 .whitespace-pre{

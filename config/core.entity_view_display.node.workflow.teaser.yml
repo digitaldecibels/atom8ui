@@ -4,6 +4,8 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
+    - field.field.node.workflow.field_id
+    - field.field.node.workflow.field_install
     - node.type.workflow
   module:
     - user
@@ -17,4 +19,6 @@ content:
     third_party_settings: {  }
     weight: 100
     region: content
-hidden: {  }
+hidden:
+  field_id: true
+  field_install: true

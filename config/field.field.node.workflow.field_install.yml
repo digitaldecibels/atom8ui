@@ -1,0 +1,29 @@
+uuid: 80705320-7f6d-4dd5-9498-90432bf7f472
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_install
+    - node.type.installation
+    - node.type.workflow
+id: node.workflow.field_install
+field_name: field_install
+entity_type: node
+bundle: workflow
+label: 'Install '
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      installation: installation
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

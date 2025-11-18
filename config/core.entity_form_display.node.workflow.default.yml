@@ -3,12 +3,32 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.workflow.field_id
+    - field.field.node.workflow.field_install
     - node.type.workflow
 id: node.workflow.default
 targetEntityType: node
 bundle: workflow
 mode: default
 content:
+  field_id:
+    type: string_textfield
+    weight: 26
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_install:
+    type: entity_reference_autocomplete
+    weight: 27
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   status:
     type: boolean_checkbox
     weight: 1
