@@ -1,4 +1,13 @@
-// group/1/content/add/group_membership
+window.dragState = { isDragging: false };
+
+document.addEventListener('dragend', () => {
+  window.dragState.isDragging = false;
+});
+
+document.addEventListener('drop', () => {
+  window.dragState.isDragging = false;
+});
+
 
 function decodeHTML(str) {
 
@@ -179,7 +188,7 @@ function userClients() {
     loading: false,
     error: null,
     dragOverClientId: null,
-    isDragging: false,
+
 
     // --- INIT ---
  async fetchData() {
@@ -237,15 +246,17 @@ addToDashboard(mappedWorkflow, client) {
                 return;
             }
 
-
-
-
-
             client.workflows.push(mappedWorkflow);
             this.dragOverClientId = null;
-            this.isDragging = false;
+            window.dragState.isDragging = false;
 
         },
+removeWorkflow(client, workflow) {
+    const index = client.workflows.indexOf(workflow);
+    if (index > -1) {
+        client.workflows.splice(index, 1);
+    }
+}
 
 
   };

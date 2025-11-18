@@ -2706,6 +2706,10 @@ select{
   min-height: 3.5rem;
 }
 
+.min-h-8{
+  min-height: 2rem;
+}
+
 .w-0{
   width: 0px;
 }
@@ -8323,6 +8327,10 @@ div.description{
   background-color: var(--color-purple-700);
 }
 
+.hover\:bg-gray-50:hover{
+  background-color: var(--color-gray-50);
+}
+
 .hover\:text-gray-800:hover{
   color: var(--color-gray-800);
 }
@@ -8373,6 +8381,10 @@ div.description{
 
 .active\:bg-purple-600:active{
   background-color: var(--color-purple-600);
+}
+
+.group:hover .group-hover\:opacity-100{
+  opacity: 1;
 }
 
 .dark\:divide-gray-700:is(.dark *) > :not([hidden]) ~ :not([hidden]){
