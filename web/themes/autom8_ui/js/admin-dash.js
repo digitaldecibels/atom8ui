@@ -1,4 +1,6 @@
-window.dragState = { isDragging: false };
+ window.dragState = {
+        isDragging: false
+    };
 
 document.addEventListener('dragend', () => {
   window.dragState.isDragging = false;
@@ -100,6 +102,10 @@ function n8nDashboard() {
   };
 }
 
+
+
+
+
 // Helper function to decode HTML entities using the browser's DOM
 function decodeHtml(html) {
   const txt = document.createElement("textarea");
@@ -188,6 +194,7 @@ function userClients() {
     loading: false,
     error: null,
     dragOverClientId: null,
+     isDragging: false,
 
 
     // --- INIT ---

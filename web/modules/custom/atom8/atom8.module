@@ -9,6 +9,14 @@ function atom8_theme() {
       'render element' => 'element',  // ✅ This should be at the TOP LEVEL
       'template' => 'toggle-published',
     ],
+'atom8_api_keys' => [ // This is the name used in '#theme'
+      'variables' => [
+        'workflows' => [],     // Defines the variable expected by the template
+      ],
+    // The template file to use, relative to the module root.
+    // Drupal will look for: 'templates/atom8-workflow-list.html.twig'
+      'template' => 'atom8-api-keys',
+    ],
   ];
 }
 function atom8_preprocess_my_toggle_published(&$variables) {

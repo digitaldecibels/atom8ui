@@ -117,6 +117,7 @@
 							<thead>
 								<tr class="bg-gray-100 dark:bg-gray-800">
 									<th class="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-400">Name</th>
+                                    	<th class="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-400">Type</th>
 									<th class="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-400">Status</th>
 
 								</tr>
@@ -136,14 +137,14 @@
 
 
 
-												<svg class="w-3 h-3" fill="currentColor" id='Drag_24' width='24' height='24' viewbox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'><rect width='24' height='24' stroke='none' fill='#000000' opacity='0'/>
+												<svg class="w-5 h-5" fill="currentColor" id='Drag_24' width='24' height='24' viewbox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'><rect width='24' height='24' stroke='none' fill='#000000' opacity='0'/>
 													<g transform="matrix(0.4 0 0 0.4 12 12)">
 														<path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4;  fill-rule: nonzero; opacity: 1;" transform=" translate(-25, -25)" d="M 25 0.09375 L 24.28125 0.78125 L 15.78125 9.28125 C 15.382813 9.679688 15.382813 10.320313 15.78125 10.71875 C 16.179688 11.117188 16.820313 11.117188 17.21875 10.71875 L 24 3.9375 L 24 24 L 3.9375 24 L 10.71875 17.21875 C 11.042969 16.917969 11.128906 16.441406 10.933594 16.046875 C 10.742188 15.648438 10.308594 15.429688 9.875 15.5 C 9.652344 15.523438 9.441406 15.625 9.28125 15.78125 L 0.78125 24.28125 L 0.09375 25 L 0.78125 25.71875 L 9.28125 34.21875 C 9.679688 34.617188 10.320313 34.617188 10.71875 34.21875 C 11.117188 33.820313 11.117188 33.179688 10.71875 32.78125 L 3.9375 26 L 24 26 L 24 46.0625 L 17.21875 39.28125 C 16.976563 39.03125 16.621094 38.925781 16.28125 39 C 15.90625 39.066406 15.605469 39.339844 15.5 39.703125 C 15.394531 40.070313 15.503906 40.460938 15.78125 40.71875 L 24.28125 49.21875 L 25 49.90625 L 25.71875 49.21875 L 34.21875 40.71875 C 34.617188 40.320313 34.617188 39.679688 34.21875 39.28125 C 33.820313 38.882813 33.179688 38.882813 32.78125 39.28125 L 26 46.0625 L 26 26 L 46.0625 26 L 39.28125 32.78125 C 38.882813 33.179688 38.882813 33.820313 39.28125 34.21875 C 39.679688 34.617188 40.320313 34.617188 40.71875 34.21875 L 49.21875 25.71875 L 49.90625 25 L 49.21875 24.28125 L 40.71875 15.78125 C 40.511719 15.558594 40.210938 15.445313 39.90625 15.46875 C 39.863281 15.476563 39.820313 15.488281 39.78125 15.5 C 39.40625 15.566406 39.105469 15.839844 39 16.203125 C 38.894531 16.570313 39.003906 16.960938 39.28125 17.21875 L 46.0625 24 L 26 24 L 26 3.9375 L 32.78125 10.71875 C 33.179688 11.117188 33.820313 11.117188 34.21875 10.71875 C 34.617188 10.320313 34.617188 9.679688 34.21875 9.28125 L 25.71875 0.78125 Z" stroke-linecap="round"/>
 													</g>
 												</svg>
 												<span class="flex flex-col">
 													<span x-text="workflow.name"></span>
-													<span class="text-purple-600 text-xs" x-text="workflow.id"></span>
+													<span class="text-purple-600 text-xs font-light" x-text="workflow.id"></span>
 												</span>
 											</div>
 
@@ -193,9 +194,17 @@
 <div x-data="userClients()" x-init="fetchData()">
 
 	<div class="flex items-center justify-between mb-4">
-		<h2 class="text-lg font-semibold mb-2">Dashboards (<span class="text-purple-600 text-sm" x-text="clients.length"></span>)</h2>
 
+  <div class="flex   justify-content-between flex-col">
 
+    <div class="flex items-center justify-content-between gap-4 mb-2 ">
+		<h2 class="text-xl font-semibold  ">Dashboards </h2>
+      <span class="flex items-center justify-center w-8 h-8 rounded-full bg-purple-600 text-white text-sm" x-text="clients.length"></span>
+
+        </div>
+  <div class="text-xs font-light">Use the handelebars to drag and drop users and workflows into dashboards</div>
+
+</div>
 		<button href="/group/add/client?destination={{ path('<current>')}}" data-dialog-type="modal" data-dialog-options='{"width":600}' class=" use-ajax flex items-center justify-between px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
 
 
@@ -209,6 +218,9 @@
 			<span>Add Dashboard</span>
 		</button>
 	</div>
+
+
+
 
 
 	<div class="w-full overflow-hidden rounded-lg shadow-xs bg-white dark:bg-gray-800 mb-8 ">
@@ -264,7 +276,7 @@
 
 								<template x-if="client.groups && client.groups.length > 0">
 									<template x-for="(user, uIndex) in client.groups" :key="uIndex">
-										<span class="inline-flex flex-col mb-1 p-2 border border-gray-600 rounded-lg">
+										<span class="inline-flex flex-col mb-1 p-2 border border-gray-300 dark:border-gray-600 rounded-md">
 											<span x-text="user.field_first_name + ' ' + user.field_last_name"></span>
 											<span class="text-purple-600 text-xs" x-text="user.mail"></span>
 										</span>
@@ -279,18 +291,48 @@
 
                                <div class="flex gap-4 w-full">
 
+             <div
+    {# x-show="window.dragState.isDragging" #}
+    x-transition
+    @dragover.prevent
+    @dragenter.prevent="dragOverClientId = client.id"
+    @dragleave.prevent="dragOverClientId = null"
+    @drop="
+        const workflowData = $event.dataTransfer.getData('application/json');
+        if (workflowData) {
+            const sourceWorkflow = JSON.parse(workflowData);
+            const mappedWorkflow = {
+                title: sourceWorkflow.name,
+                field_id: sourceWorkflow.id,
+                field_type: sourceWorkflow.type
+            };
+            addToDashboard(mappedWorkflow, client);
+            dragOverClientId = null;
+            window.dragState.isDragging = false;
+        }
+    "
+    class="min-h-14 flex items-center justify-center rounded-lg transition-colors duration-200 p-2"
+    :class="{
+        'border-2 border-dashed border-purple-500 bg-purple-50': dragOverClientId === client.id,
+        'border border-gray-200': dragOverClientId !== client.id,
+        {# 'hidden': !window.dragState.isDragging #}
 
+    }"
+>
+    <svg class="w-3 h-3  text-purple-600" fill="currentColor" id="Plus_24" viewBox="0 0 24 24">
+        <path d="M11 2 L11 11 L2 11 L2 13 L11 13 L11 22 L13 22 L13 13 L22 13 L22 11 L13 11 L13 2 Z"/>
+    </svg>
+    <span class="text-purple-600 text-xs  pointer-none font-light">Drop here</span>
+</div>
 
                                <!-- Dropped workflows -->
 
-
-
                                 <div>
                            <template x-for="(workflow, wIndex) in client.workflows" :key="workflow.field_id">
-                                        <div class="flex gap-4 mb-1 justify-between items-center w-full p-2 border border-gray-600 rounded-lg group">
+                                        <div class="flex gap-4 mb-1 justify-between items-center w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md group">
                                             <div class="inline-flex flex-col ">
-                                                <span class="max-w-sm overflow-hidden whitespace-nowrap text-ellipsis" x-text="decodeHTML(workflow.title)"></span>
-                                                <span class="text-purple-600 text-xs" x-text="workflow.field_id"></span>
+                                                <span class="max-w-sm overflow-hidden whitespace-nowrap text-ellipsis text-md" x-text="decodeHTML(workflow.title)"></span>
+                                                <span class="text-purple-600 text-xs font-light" x-text="workflow.field_id"></span>
                                             </div>
                                             <button class="flex opacity-0 group-hover:opacity-100"    @click="removeWorkflow(client, workflow)" >
                                                 <svg class="w-3 h-3" fill="currentColor" id='Trash_24' width='24' height='24' viewbox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'><rect width='24' height='24' stroke='none' fill='#000000' opacity='0'/>
@@ -306,39 +348,7 @@
 
 
 
-                                    <div
-                                        class="min-h-14 overflow-hidden p-2 rounded-lg transition-colors duration-200"
-                                        @dragover.prevent
-                                        @dragenter.prevent="dragOverClientId = client.id"
-                                        @dragleave.prevent="dragOverClientId = null"
-                                        @drop="
-                                        const workflowData = $event.dataTransfer.getData('application/json');
-                                        if (workflowData) {
-                                            const sourceWorkflow = JSON.parse(workflowData);
-                                            const mappedWorkflow = {
-                                            title: sourceWorkflow.name,
-                                            field_id: sourceWorkflow.id,
-                                            field_type: sourceWorkflow.type
-                                            };
-                                            addToDashboard(mappedWorkflow, client);
-                                            dragOverClientId = null;
-                                            window.dragState.isDragging = false;
-                                        }
-                                        "
 
-                                        class="flex  items-center justify-content-center"
-                                        :class="{
-                                        'border-2 border-dashed border-purple-500 bg-purple-50': window.dragState.isDragging && dragOverClientId === client.id,
-                                        'border border-gray-200  ': !window.dragState.isDragging || dragOverClientId !== client.id
-                                        }"
-                                    >
-
-                                    <svg class="w-4 h-4 mr-2 -ml-1" fill="currentColor" id="Plus_24" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><rect width="24" height="24" stroke="none" fill="#000000" opacity="0"></rect>
-				<g transform="matrix(1 0 0 1 12 12)">
-					<path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4;  fill-rule: evenodd; opacity: 1;" transform=" translate(-12, -12)" d="M 11 2 L 11 11 L 2 11 L 2 13 L 11 13 L 11 22 L 13 22 L 13 13 L 22 13 L 22 11 L 13 11 L 13 2 Z" stroke-linecap="round"></path>
-				</g>
-			</svg>
- </div>
 
 
     </div>

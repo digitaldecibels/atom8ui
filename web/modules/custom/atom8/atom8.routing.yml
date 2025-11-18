@@ -1,3 +1,15 @@
+atom8.api_keys:
+  path: '/apikeys'
+  defaults:
+    # Use the required double-colon (::)
+    _controller: 'Drupal\atom8\Controller\ApiKeys::list'
+    _title: 'Atom8 Workflows'
+  requirements:
+    _permission: 'administer site configuration'
+
+
+
+
 atom8.workflows:
   path: '/fetch/n8n'
   defaults:
