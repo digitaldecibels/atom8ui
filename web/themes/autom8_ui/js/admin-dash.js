@@ -1,95 +1,100 @@
- window.dragState = {
-        isDragging: false
-    };
-
-document.addEventListener('dragend', () => {
-  window.dragState.isDragging = false;
-});
-
-document.addEventListener('drop', () => {
-  window.dragState.isDragging = false;
-});
+// Helper function to decode HTML entities using the browser's DOM
 
 
+// Function that was likely intended to be named 'decodeHtml' or similar, but
+// is not used inside n8nDashboard. Retained for completeness.
 function decodeHTML(str) {
+  if (str) {
+    const doc = new DOMParser().parseFromString(str, "text/html");
+    return doc.documentElement.textContent;
+  }
+}
 
-    if(str){
-        const doc = new DOMParser().parseFromString(str, "text/html");
-        return doc.documentElement.textContent;
-      }
-    }
+// Unused function, but retained for completeness.
+function reattachDrupalBehaviors(context) {
+  if (
+    typeof Drupal !== "undefined" &&
+    typeof Drupal.attachBehaviors === "function"
+  ) {
+    // Implementation was empty in the original code, keeping it that way.
+  } else {
+    console.error("Drupal.attachBehaviors not available");
+  }
+}
 
-
-
-
-
-
-
+// --- Alpine.js Component Start ---
 function n8nDashboard() {
   return {
-    workflows: [],
-    installs: [],
-    isLoading: false,
-    error: "",
-
+    // --- State Variables ---
+    workflows: [], // n8n workflows fetched from API
+    installs: [], // Installations data from /rest/installations
+    clients: [], // Users/groups data from /rest/user/groups
+    dashboardWorkflows: [], // Assuming this was meant for filtered/display workflows
+    draggedWorkflow: null, // Workflow currently being dragged
+    dragOverClientId: null, // Client ID being dragged over
+    isDragging: false, // Flag for drag state
+    // --- Loading/Error State ---
+    isLoading: true, // Primary loading flag: Start as TRUE
+        error: null,
+    // --- Methods ---
+    /**
+     * Lifecycle method to fetch all necessary data on component initialization.
+     */
     async fetchData() {
-      this.isLoading = true;
-      this.error = "";
-      this.workflows = [];
-      this.installs = [];
 
+
+      // 1. Fetch Installations
       try {
         const installResponse = await fetch("/rest/installations");
         if (!installResponse.ok)
           throw new Error(`HTTP error! Status: ${installResponse.status}`);
-
         const installData = await installResponse.json();
-
-        // Updated for new data structure
         this.installs = installData || [];
       } catch (e) {
         console.error(e);
-        this.error = `Failed to fetch workflows: ${e.message}`;
+        this.error = `Failed to fetch installations: ${e.message}`;
       }
 
+      // 2. Fetch n8n Workflows
       const url =
         "/fetch/n8n?url=https://n8n.digitaldecibels.com&apikey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiMTRkODNjZS1lZTViLTRhYTktYWFiMi03MmJhZTExZmE3OWUiLCJpc3MiOiJuOG4iLCJhdWQiOiJwdWJsaWMtYXBpIiwiaWF0IjoxNzYzNDAxMDA3fQ.LouJnqhRZQfDKcEEc6K_NzpGzt8jP-fbaqEnTnY9VnQ&endpoint=/api/v1/workflows";
-
       try {
         const response = await fetch(url);
         if (!response.ok)
           throw new Error(`HTTP error! Status: ${response.status}`);
-
         const data = await response.json();
-
-        // Updated for new data structure
         this.workflows = data.data || [];
 
-        // Use regular setTimeout instead of $nextTick
+        // Re-attach Drupal behaviors and AJAX links after DOM update
         setTimeout(() => {
-          const container = this.$refs.workflowsTable;
-
-          // First attach behaviors normally
-          if (typeof Drupal !== "undefined" && Drupal.attachBehaviors) {
+          const container = this.$refs.workflowsTable; // Assumes a ref exists in HTML
+          if (
+            typeof Drupal !== "undefined" &&
+            Drupal.attachBehaviors
+          ) {
             Drupal.attachBehaviors(container, drupalSettings);
           }
-
-          // Then specifically process AJAX links
           if (typeof Drupal !== "undefined" && Drupal.ajax) {
             const ajaxLinks = container.querySelectorAll(
               "a.use-ajax, button.use-ajax"
             );
-
             ajaxLinks.forEach((element) => {
-              if (!element.hasAttribute("data-drupal-ajax-processed")) {
+              if (
+                !element.hasAttribute(
+                  "data-drupal-ajax-processed"
+                )
+              ) {
                 Drupal.ajax({
                   element: element,
                   url:
                     element.getAttribute("href") ||
                     element.getAttribute("data-dialog-url"),
-                  dialogType: element.getAttribute("data-dialog-type"),
+                  dialogType: element.getAttribute(
+                    "data-dialog-type"
+                  ),
                   dialog: JSON.parse(
-                    element.getAttribute("data-dialog-options") || "{}"
+                    element.getAttribute("data-dialog-options") ||
+                      "{}"
                   ),
                 });
               }
@@ -100,120 +105,82 @@ function n8nDashboard() {
         console.error(e);
         this.error = `Failed to fetch workflows: ${e.message}`;
       } finally {
-        this.isLoading = false;
+        // Keep `isLoading` separate from the clients' loading flag
+      }
+
+      // 3. Fetch Users/Groups/Client Workflows
+      try {
+        const userRes = await fetch("/rest/user/groups");
+        const userData = await userRes.json();
+        let updatedClients = userData.map((u) => ({
+          ...u,
+          groups: [],
+          workflows: [],
+        }));
+        for (let i = 0; i < updatedClients.length; i++) {
+          const client = updatedClients[i];
+          // Fetch groups and workflows in parallel
+          const [groupsRes, workflowsRes] = await Promise.all([
+            fetch(`/rest/group/users/${client.id}`),
+            fetch(`/rest/group/workflows/${client.id}`),
+          ]);
+          const [groups, workflows] = await Promise.all([
+            groupsRes.json(),
+            workflowsRes.json(),
+          ]);
+          updatedClients[i] = {
+            ...client,
+            groups,
+            workflows,
+          };
+        }
+        // Assign the final array
+        this.clients = updatedClients;
+      } catch (err) {
+        this.error = "Unable to load dashboards";
+        console.error(err);
+      } finally {
+          this.isLoading = false;
+      }
+    },
+
+    /**
+     * Adds a mapped workflow to a specific client's workflow list.
+     * @param {Object} mappedWorkflow - The workflow object to add.
+     * @param {Object} client - The client object to add the workflow to.
+     */
+    addToDashboard(mappedWorkflow, client) {
+      console.log("Mapped Workflow received:", mappedWorkflow);
+      // Check for duplicates using the client's internal ID name (`field_id`)
+      const exists = client.workflows.some(
+        (w) => w.field_id === mappedWorkflow.field_id
+      );
+      if (exists) {
+        alert("Workflow already assigned.");
+        return;
+      }
+      client.workflows.push(mappedWorkflow);
+
+      // Reset drag state variables
+      this.dragOverClientId = null;
+      // Assuming `window.dragState` is managed externally for the drag operation
+       this.isDragging  = false;
+    },
+
+    /**
+     * Removes a workflow from a client's workflow list.
+     * @param {Object} client - The client object the workflow belongs to.
+     * @param {Object} workflow - The workflow object to remove.
+     */
+    removeWorkflow(client, workflow) {
+      const index = client.workflows.indexOf(workflow);
+      if (index > -1) {
+        client.workflows.splice(index, 1);
       }
     },
   };
+
+
 }
-
-
-
-
-
-// Helper function to decode HTML entities using the browser's DOM
-function decodeHtml(html) {
-  const txt = document.createElement("textarea");
-  txt.innerHTML = html;
-  return txt.value;
-}
-
-function reattachDrupalBehaviors(context) {
-  if (
-    typeof Drupal !== "undefined" &&
-    typeof Drupal.attachBehaviors === "function"
-  ) {
-  } else {
-    console.error("Drupal.attachBehaviors not available");
-  }
-}
-
-
-// user clients
-
-function userClients() {
-  return {
-
-    clients: [],
-    workflows: [],               // All available workflows
-    dashboardWorkflows: [],      // Workflows dropped into dashboard
-    draggedWorkflow: null,       // Holds the workflow currently being dragged
-    loading: false,
-    error: null,
-    dragOverClientId: null,
-     isDragging: false,
-
-
-    // --- INIT ---
- async fetchData() {
-    this.loading = true;
-    this.error = null;
-
-    // Clear array first to avoid duplicates
-    this.clients = [];
-
-try {
-  const userRes = await fetch('/rest/user/groups');
-  const userData = await userRes.json();
-
-  // 1. Start building the new array (use a temporary variable)
-  let updatedClients = userData.map(u => ({ ...u, groups: [], workflows: [] }));
-
-  for (let i = 0; i < updatedClients.length; i++) {
-    const client = updatedClients[i];
-
-    // Fetch groups and workflows in parallel for efficiency
-    const [groupsRes, workflowsRes] = await Promise.all([
-      fetch(`/rest/group/users/${client.id}`),
-      fetch(`/rest/group/workflows/${client.id}`)
-    ]);
-
-    const [groups, workflows] = await Promise.all([
-      groupsRes.json(),
-      workflowsRes.json()
-    ]);
-
-    // 2. Update the temporary array item
-    updatedClients[i] = { ...client, groups, workflows };
-  }
-
-  // 3. Assign the complete, final array to the Alpine state *only once*
-  this.clients = updatedClients;
-
-} catch (err) {
-  this.error = 'Unable to load dashboards';
-  console.error(err);
-}
-
-    this.loading = false;
-},
-
-
-addToDashboard(mappedWorkflow, client) {
-            console.log('Mapped Workflow received:', mappedWorkflow);
-
-            // 1. Check for duplicates using the client's internal ID name (`field_id`)
-            const exists = client.workflows.some(w => w.field_id === mappedWorkflow.field_id);
-
-            if (exists) {
-                alert('Workflow already assigned.');
-                return;
-            }
-
-            client.workflows.push(mappedWorkflow);
-            this.dragOverClientId = null;
-            window.dragState.isDragging = false;
-
-        },
-removeWorkflow(client, workflow) {
-    const index = client.workflows.indexOf(workflow);
-    if (index > -1) {
-        client.workflows.splice(index, 1);
-    }
-}
-
-
-  };
-}
-
 
 

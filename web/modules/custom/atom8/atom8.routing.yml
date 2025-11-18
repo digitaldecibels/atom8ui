@@ -1,7 +1,6 @@
 atom8.api_keys:
   path: '/apikeys'
   defaults:
-    # Use the required double-colon (::)
     _controller: 'Drupal\atom8\Controller\ApiKeys::list'
     _title: 'Atom8 Workflows'
   requirements:
@@ -17,3 +16,18 @@ atom8.workflows:
     _title: 'Atom8 Workflows'
   requirements:
     _permission: 'administer site configuration'
+
+
+# In modules/custom/atom8/atom8.routing.yml
+
+atom8.assign_workflow:
+  # Define a simple path without path arguments
+  path: '/assign/workflow/create'
+  defaults:
+    _controller: '\Drupal\atom8\Controller\AssignWorkflowController::assign'
+    _title: 'Assign Workflow'
+  requirements:
+    # _permission: 'access content'
+  options:
+    _format: json # This tells Drupal to expect a JSON payload
+    _method: POST # Enforce POST method

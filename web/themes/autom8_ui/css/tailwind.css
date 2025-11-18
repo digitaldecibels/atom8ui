@@ -204,3 +204,8 @@ div.description{
 .ui-dialog-buttonpane.ui-widget-content{
     @apply bg-transparent   border-gray-700;
 }
+
+:root {
+    /* --color-purple-600: green;
+        --color-purple-400: lightgreen; */
+}
