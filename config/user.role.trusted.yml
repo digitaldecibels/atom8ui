@@ -1,9 +1,0 @@
-uuid: 09e00c2b-1a50-4172-b35b-0c548c8f7598
-langcode: en
-status: true
-dependencies: {  }
-id: trusted
-label: Trusted
-weight: -10
-is_admin: null
-permissions: {  }

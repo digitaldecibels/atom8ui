@@ -1,0 +1,18 @@
+uuid: 0a4bd377-1e47-4128-8772-e5241e4afadb
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.installation
+id: node.installation.title
+field_name: title
+entity_type: node
+bundle: installation
+label: Label
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

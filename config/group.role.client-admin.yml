@@ -1,0 +1,14 @@
+uuid: 2c282c7a-4879-4cdd-a40c-221dc968fa7f
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.client
+id: client-admin
+label: Admin
+weight: 100
+admin: true
+scope: individual
+global_role: null
+group_type: client
+permissions: {  }

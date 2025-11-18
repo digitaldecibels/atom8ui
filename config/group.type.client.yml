@@ -1,0 +1,12 @@
+uuid: 86e52e42-6a55-4ad1-b789-1aaaf0de62fc
+langcode: en
+status: true
+dependencies: {  }
+id: client
+label: Client
+description: ''
+new_revision: false
+creator_membership: true
+creator_wizard: false
+creator_roles:
+  - client-admin

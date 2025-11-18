@@ -1,0 +1,15 @@
+uuid: 6fba3f9b-3c94-4264-8cd2-b0ed751b75df
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.client
+    - user.role.authenticated
+id: client-outsider
+label: Outsider
+weight: -101
+admin: false
+scope: outsider
+global_role: authenticated
+group_type: client
+permissions: {  }

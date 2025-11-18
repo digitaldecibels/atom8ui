@@ -1,15 +1,16 @@
-enabled: true
+enabled: false
 disable_for_administrators: false
+home_link_path: /dev-dashboard
 roles:
   anonymous:
     enabled: null
     weight: 0
-    path: /node/93
+    path: ''
   authenticated:
-    enabled: true
+    enabled: null
     weight: 0
-    path: /my-lots
+    path: ''
   administrator:
     enabled: null
     weight: 0
-    path: /lot-manager
+    path: ''

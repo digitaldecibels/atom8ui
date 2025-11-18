@@ -1,0 +1,23 @@
+uuid: 4ce6fb2b-0f3b-4f23-b234-172b65adb334
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.group_relationship.client-group_membership.group_roles
+    - group.relationship_type.client-group_membership
+id: group_relationship.client-group_membership.default
+targetEntityType: group_relationship
+bundle: client-group_membership
+mode: default
+content:
+  group_roles:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: false
+    third_party_settings: {  }
+    weight: -4
+    region: content
+hidden:
+  entity_id: true
+  uid: true

@@ -8,11 +8,20 @@ global-styling:
     //cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js: { type: external, minified: true, attributes: { defer: true } }
     js/init-alpine.js: {}
 
+
+admin_dash:
+  version: 1.x
+  js:
+    js/admin-dash.js: {}
+
+
+
 charts:
   version: 1.x
   css:
     theme:
       //cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css: { type: external, minified: true }
+  header: true
   js:
     //cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js: { type: external, minified: true, attributes: { defer: true } }
     js/charts-lines.js: { attributes: { defer: true } }

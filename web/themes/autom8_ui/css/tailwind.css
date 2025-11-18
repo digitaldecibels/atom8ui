@@ -146,7 +146,61 @@
 /* EXAMPLE: Dark mode theme switch */
 .dark {
     /* Example: Make gray-500 lighter in dark mode */
-    --color-gray-500: #b9b9b9; 
+    --color-gray-500: #b9b9b9;
     /* Example: Make the background dark */
     --color-white: #121317;
+}
+
+
+.ajax-progress-throbber,
+.ajax-progress {
+  display: none !important;
+}
+
+
+
+
+.ui-widget.ui-widget-content{
+    @apply rounded-lg shadow-md bg-white
+}
+
+.ui-dialog-buttonset .form-actions{
+    @apply w-full flex gap-4;
+}
+
+.ui-button:hover{
+    @apply text-white;
+}
+
+
+div.description{
+    @apply text-sm text-purple-600 pt-2;
+}
+
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset{
+    @apply float-none flex w-full flex-row-reverse;
+}
+
+
+
+.ui-widget.ui-widget-content{
+   @apply dark:bg-black dark:border-black;
+}
+
+.ui-dialog-titlebar{
+   @apply  py-4  text-xl font-semibold text-purple-100 bg-purple-600   shadow-md border-none m-0 p-0   ;
+}
+
+.ui-dialog{
+    @apply m-0 p-0 border-0
+}
+
+
+
+.ui-widget.ui-widget-content{
+    @apply bg-white  dark:bg-gray-900 border-none;
+}
+
+.ui-dialog-buttonpane.ui-widget-content{
+    @apply bg-transparent   border-gray-700;
 }

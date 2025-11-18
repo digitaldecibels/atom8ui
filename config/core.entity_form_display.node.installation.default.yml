@@ -9,21 +9,14 @@ dependencies:
     - node.type.installation
   module:
     - link
-    - path
 id: node.installation.default
 targetEntityType: node
 bundle: installation
 mode: default
 content:
-  created:
-    type: datetime_timestamp
-    weight: 10
-    region: content
-    settings: {  }
-    third_party_settings: {  }
   field_api_key:
     type: string_textfield
-    weight: 125
+    weight: 3
     region: content
     settings:
       size: 60
@@ -31,7 +24,7 @@ content:
     third_party_settings: {  }
   field_host:
     type: link_default
-    weight: 123
+    weight: 1
     region: content
     settings:
       placeholder_url: ''
@@ -39,58 +32,23 @@ content:
     third_party_settings: {  }
   field_type:
     type: options_select
-    weight: 124
+    weight: 2
     region: content
     settings: {  }
-    third_party_settings: {  }
-  path:
-    type: path
-    weight: 30
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  promote:
-    type: boolean_checkbox
-    weight: 15
-    region: content
-    settings:
-      display_label: true
-    third_party_settings: {  }
-  status:
-    type: boolean_checkbox
-    weight: 120
-    region: content
-    settings:
-      display_label: true
-    third_party_settings: {  }
-  sticky:
-    type: boolean_checkbox
-    weight: 16
-    region: content
-    settings:
-      display_label: true
     third_party_settings: {  }
   title:
     type: string_textfield
-    weight: -5
+    weight: 0
     region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-  uid:
-    type: entity_reference_autocomplete
-    weight: 5
-    region: content
-    settings:
-      match_operator: CONTAINS
-      match_limit: 10
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  url_redirects:
-    weight: 50
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-hidden: {  }
+hidden:
+  created: true
+  path: true
+  promote: true
+  status: true
+  sticky: true
+  uid: true
+  url_redirects: true

@@ -1,210 +1,165 @@
-<div class="w-full overflow-hidden rounded-lg shadow-xs">
+{{ attach_library('core/drupal.ajax') }}
+{{ attach_library('core/drupal.dialog.ajax') }}
+
+{{ attach_library('atom8_ui/admin_dash') }}
 
 
-<div class="w-full overflow-x-auto">
+<div x-data="installationsTable()" x-init="fetchData()">
+
+	<div class="flex items-center justify-between mb-4">
+		<h2 class="text-lg font-semibold mb-2">Installs (<span class="text-purple-600 text-sm" x-text="installations.length"></span>)</h2>
 
 
-<div x-data="installationsTable()" x-init="fetchData">
+		<button href="node/add/installation?destination={{ path('<current>')}}" data-dialog-type="modal" data-dialog-options='{"width":600}' class=" use-ajax flex items-center justify-between px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
 
 
-	<p x-show="loading">Loading data...</p>
-
-	<p x-show="error" style="color: red;">Error:
-		<span x-text="error"></span>
-	</p>
-
-	<table x-show="installations.length > 0 && !loading">
-		<thead>
-			<tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
-				<th class="px-4 py-3">Title</th>
-				<th class="px-4 py-3">Type</th>
-				<th class="px-4 py-3">Host</th>
-			</tr>
-		</thead>
-		<tbody>
-			<template x-for="installation in installations" :key="installation.id">
-				<tr>
-					<td class="px-4 py-3 text-sm" x-text="installation.title"></td>
-					<td class="px-4 py-3 text-sm">
-
-						<div class="flex items-center ">
-							<img class="w-10 h-auto" src="{{ theme_path }}/images/n8n.svg" :alt="installation.field_type"/>
-
-							<span x-text="installation.field_type"></span>
-						</div>
+			<svg class="w-4 h-4 mr-2 -ml-1" fill="currentColor" id='Plus_24' width='24' height='24' viewbox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'><rect width='24' height='24' stroke='none' fill='#000000' opacity='0'/>
+				<g transform="matrix(1 0 0 1 12 12)">
+					<path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4;  fill-rule: evenodd; opacity: 1;" transform=" translate(-12, -12)" d="M 11 2 L 11 11 L 2 11 L 2 13 L 11 13 L 11 22 L 13 22 L 13 13 L 22 13 L 22 11 L 13 11 L 13 2 Z" stroke-linecap="round"/>
+				</g>
+			</svg>
 
 
-					</td>
-					<td class="px-4 py-3 text-sm">
-
-						<a class="text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline" target="_blank" :href="installation.field_host" x-text="installation.field_host"></a>
-
-					</td>
-				</tr>
-			</template>
-		</tbody>
-	</table>
-
-</div>
-</div>
-</div>
-
-<script>
-	// Helper function to decode HTML entities using the browser's DOM
-function decodeHtml(html) { // Create a temporary textarea element
-const txt = document.createElement("textarea");
-// Set the encoded string as the innerHTML. The browser automatically decodes entities.
-txt.innerHTML = html;
-// Return the decoded text value
-return txt.value;
-}
-
-function installationsTable() {
-return {
-installations: [], loading: true, error: null,
-
-// Function to fetch the data
-async fetchData() {
-try {
-const response = await fetch('/rest/installations');
-
-if (! response.ok) {
-throw new Error(`HTTP error! status: ${
-response.status
-}`);
-}
-
-const data = await response.json();
-
-// 1. Map over the fetched data to decode the 'title' property
-const decodedData = data.map(installation => { // Create a new object to avoid modifying the original data directly (good practice)
-return {
-...installation,
-// Apply the decoding function to the title
-title: decodeHtml(installation.title)
-};
-});
-
-// 2. Store the decoded data
-this.installations = decodedData;
-
-} catch (e) {
-console.error("Fetch error:", e);
-this.error = e.message;
-} finally {
-this.loading = false;
-}
-}
-}
-}
-</script>
-
-
-{# workflows  #}
-
-
-<div x-data="n8nDashboard()" x-init="fetchData" x-cloak>
-
-
-	<div x-show="isLoading" class="card">
-		<p>Loading workflows and logs...</p>
+			<span>Add Install</span>
+		</button>
 	</div>
 
-	<div x-show="error" class="card error">
-		<p>Error:
-			<span x-text="error"></span>
-		</p>
-		<p>Double-check your **Base URL** and **API Key**.</p>
-	</div>
 
-	<template x-if="!isLoading && !error">
-		<div>
-			<div class="card">
-				<h2>📋 Workflows (<span x-text="workflows.length"></span>)</h2>
-				<template x-for="workflow in workflows" :key="workflow.id">
-					<div class="workflow-item">
-						<strong x-text="workflow.name"></strong>
-						-
-						<span :style="{ color: workflow.active ? 'green' : 'gray' }" x-text="workflow.active ? 'Active' : 'Inactive'"></span>
-						<small>(ID:
-							<span x-text="workflow.id"></span>)</small>
-					</div>
-				</template>
-				<p x-show="workflows.length === 0">No workflows found.</p>
-			</div>
+	<div class="w-full overflow-hidden rounded-lg shadow-xs bg-white  dark:bg-gray-800 mb-8 ">
 
-			<div class="card">
-				<h2>⏳ Recent Execution Logs (<span x-text="executions.length"></span>)</h2>
-				<template x-for="execution in executions" :key="execution.id">
-					<div class="log-item">
-						<strong x-text="execution.workflow.name"></strong>
-						<span :style="{ color: execution.status === 'success' ? 'green' : 'red' }">
-							(<span x-text="execution.status"></span>)
-						</span>
-						on
-						<span x-text="new Date(execution.startedAt).toLocaleString()"></span>
-					</div>
-				</template>
-				<p x-show="executions.length === 0">No recent logs found.</p>
-			</div>
+
+		<div class="w-full overflow-x-auto">
+
+
+			<p x-show="loading">Loading data...</p>
+
+			<p x-show="error" style="color: red;">Error:
+				<span x-text="error"></span>
+			</p>
+
+			{# instlattion table  #}
+
+			<table x-ref="tableContainer" class="w-full" x-show="installations.length > 0 && !loading">
+				<thead>
+					<tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+						<th class="px-4 py-3">Title</th>
+						<th class="px-4 py-3">Type</th>
+						<th class="px-4 py-3">Host</th>
+						<th class=" py-3">Actions</th>
+					</tr>
+				</thead>
+				<tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
+					<template x-for="installation in installations" :key="installation.id">
+						<tr class="text-gray-700 dark:text-gray-400">
+							<td class="px-4 py-3 text-sm" x-text="installation.title"></td>
+							<td class="px-4 py-3 text-sm">
+
+								<div class="flex items-center ">
+									<img class="w-10 h-auto" src="{{ theme_path }}/images/n8n.svg" :alt="installation.field_type" :title="installation.field_type"/>
+
+
+								</div>
+							</td>
+							<td class="px-4 py-3 text-sm">
+
+								<a class="text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline" target="_blank" :href="installation.field_host" x-text="installation.field_host"></a>
+							</td>
+
+							<td>
+
+								<button :href="'node/' + installation.nid + '/edit?destination=/dev-dashboard'" data-dialog-type="modal" data-dialog-options='{"width":600}' class=" use-ajax flex items-center justify-between text-center px-4 py-2 text-sm font-medium   text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
+									<svg class="w-3 h-3" fill="currentColor" id='Edit_24' width='24' height='24' viewbox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'><rect width='24' height='24' stroke='none' fill='#000000' opacity='0'/>
+										<g transform="matrix(1.05 0 0 1.05 12 12)">
+											<path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill-rule: nonzero; opacity: 1;" transform=" translate(-12.5, -11.5)" d="M 18.414062 2 C 18.158188 2 17.902031 2.0974687 17.707031 2.2929688 L 16 4 L 20 8 L 21.707031 6.2929688 C 22.098031 5.9019687 22.098031 5.2689063 21.707031 4.8789062 L 19.121094 2.2929688 C 18.925594 2.0974687 18.669937 2 18.414062 2 z M 14.5 5.5 L 3 17 L 3 21 L 7 21 L 18.5 9.5 L 14.5 5.5 z" stroke-linecap="round"/>
+										</g>
+									</svg>
+								</button>
+
+
+							</td>
+
+
+						</tr>
+					</template>
+				</tbody>
+			</table>
+
 		</div>
-	</template>
-</div></div><script>
-function n8nDashboard() {
-return {
-// Configuration
-baseUrl: 'https://n8n.digitaldecibels.com', // Replace with your default URL
-apiKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiMTRkODNjZS1lZTViLTRhYTktYWFiMi03MmJhZTExZmE3OWUiLCJpc3MiOiJuOG4iLCJhdWQiOiJwdWJsaWMtYXBpIiwiaWF0IjoxNzYzNDAxMDA3fQ.LouJnqhRZQfDKcEEc6K_NzpGzt8jP-fbaqEnTnY9VnQ',
-// NEVER expose this in production code
-
-// State
-workflows: [],
-executions: [],
-isLoading: false,
-error: '',
-
-// Fetch function
-async fetchData() {
-if (!this.baseUrl || !this.apiKey) {
-this.error = 'Please enter both the Base URL and the API Key.';
-return;
-}
-
-this.isLoading = true;
-this.error = '';
-this.workflows = [];
-this.executions = [];
-
-const headers = {
-'Accept': '*/*',
-'X-N8N-API-KEY': this.apiKey
-};
-
-// --- 1. Fetch Workflows ---
-const workflowUrl = `${
-this.baseUrl.replace(/\/$/, "")
-}/api/v1/workflows`;
+	</div>
+</div>
 
 
-try {
-const workflowResponse = await fetch(workflowUrl, {headers});
 
 
-if (! workflowResponse.ok) {
-throw new Error(`HTTP error fetching workflows! Status: ${
-workflowResponse.status
-}`);
-}
-const data = await workflowResponse.json();
-this.workflows = data.data;
-} catch (e) {
-this.error = `Failed to fetch workflows: ${
-e.message
-}`;
-this.isLoading = false;
-return;
-}
+{# workflows #}
+<div x-data="n8nDashboard()" x-init="fetchData()" x-cloak>
+	<h2 class="text-lg font-semibold mb-2">Workflows (<span class="text-purple-600 text-sm" x-text="workflows.length"></span>)</h2>
 
-}
-}
-}</script>
+
+	<div class="w-full overflow-hidden rounded-lg shadow-xs bg-white dark:bg-gray-800  mb-8 ">
+
+
+		<div class="w-full overflow-x-auto">
+
+
+			<div x-show="isLoading" class="card">
+				<p>Loading workflows and logs...</p>
+			</div>
+
+			<div x-show="error" class="card error">
+				<p>Error:
+					<span x-text="error"></span>
+				</p>
+				<p>Double-check your Base URL and API Key.</p>
+			</div>
+
+			<template x-if="!isLoading && !error">
+				<div>
+					<!-- Workflows Table -->
+					<div
+						class="card overflow-x-auto">
+
+
+						{# workflow tables  #}
+
+						<table x-ref="workflowsTable" class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+							<thead>
+								<tr class="bg-gray-100 dark:bg-gray-800">
+									<th class="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-400">Name</th>
+									<th class="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-400">Status</th>
+									<th class="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-400">ID</th>
+								</tr>
+							</thead>
+							<tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+								<template x-for="workflow in workflows" :key="workflow.id">
+									<tr class="text-gray-700 dark:text-gray-400">
+										<td class="px-4 py-3 text-sm" x-text="workflow.name"></td>
+										<td class="px-4 py-3 text-sm">
+											<span :class="workflow.active ? 'text-green-600' : 'text-gray-400'" x-text="workflow.active ? 'Active' : 'Inactive'"></span>
+										</td>
+										<td class="px-4 py-3 text-sm" x-text="workflow.id"></td>
+
+										<td class="px-4 py-3 text-sm">
+											<button :href="'node/add/workflow" data-dialog-type="modal" data-dialog-options='{"width":600}' class=" use-ajax flex items-center justify-between text-center px-4 py-2 text-sm font-medium   text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
+												<svg class="w-3 h-3" fill="currentColor" id='Edit_24' width='24' height='24' viewbox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'><rect width='24' height='24' stroke='none' fill='#000000' opacity='0'/>
+													<g transform="matrix(1.05 0 0 1.05 12 12)">
+														<path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill-rule: nonzero; opacity: 1;" transform=" translate(-12.5, -11.5)" d="M 18.414062 2 C 18.158188 2 17.902031 2.0974687 17.707031 2.2929688 L 16 4 L 20 8 L 21.707031 6.2929688 C 22.098031 5.9019687 22.098031 5.2689063 21.707031 4.8789062 L 19.121094 2.2929688 C 18.925594 2.0974687 18.669937 2 18.414062 2 z M 14.5 5.5 L 3 17 L 3 21 L 7 21 L 18.5 9.5 L 14.5 5.5 z" stroke-linecap="round"/>
+													</g>
+												</svg>
+											</button>
+										</td>
+									</tr>
+								</template>
+							</tbody>
+						</table>
+
+					</div>
+
+
+				</div>
+			</template>
+		</div>
+
+	</div>
+
+</div>

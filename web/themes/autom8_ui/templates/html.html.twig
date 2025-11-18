@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html :class="{ 'theme-dark': dark }" x-data="data()" lang="en">
+<html x-data="data()" lang="en">
 	<head>
 		<head-placeholder token="{{ placeholder_token|raw }}">
 
@@ -15,8 +15,10 @@
 					{{ logged_in ? 'user-logged-in' : 'logged-out' }}
 					{{ not root_path ? 'home' : 'path-' ~ root_path|clean_class }}
 					{{ node_type ? 'page-node-type-' ~ node_type|clean_class }}
-					">
-		 
+					"
+					:class="{ 'dark': dark }"
+					>
+
 					{{ page_top }}
 					{{ page }}
 					{{ page_bottom }}

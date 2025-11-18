@@ -5,6 +5,7 @@ module:
   action: 0
   address: 0
   admin_toolbar: 0
+  atom8: 0
   automated_cron: 0
   backup_migrate: 0
   barcodes: 0
@@ -14,7 +15,6 @@ module:
   bpmn_io: 0
   breakpoint: 0
   captcha: 0
-  cash_for_computer_scrap: 0
   ckeditor5: 0
   coffee: 0
   comment: 0

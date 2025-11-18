@@ -1,0 +1,15 @@
+uuid: 30359f58-2a74-464a-b2ac-545e92f12554
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.client
+    - user.role.anonymous
+id: client-anonymous
+label: Anonymous
+weight: -102
+admin: false
+scope: outsider
+global_role: anonymous
+group_type: client
+permissions: {  }

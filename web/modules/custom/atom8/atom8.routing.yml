@@ -1,14 +1,7 @@
- 
-
-# cash_for_computer_scrap.packing_slip:
-#   path: '/packing-slip/{node}'
-#   defaults:
-#     _controller: '\Drupal\cash_for_computer_scrap\Controller\PackingSlipController::generatePdf'
-#     _title: 'Packing Slip'
-#   requirements:
-#     # Use the correct class name here
-#    _lot_access: 'TRUE'
-#   options:
-#     parameters:
-#       node:
-#         type: entity:node
+atom8.workflows:
+  path: '/fetch/n8n'
+  defaults:
+    _controller: 'Drupal\atom8\Controller\WorkflowController::list'
+    _title: 'Atom8 Workflows'
+  requirements:
+    _permission: 'administer site configuration'

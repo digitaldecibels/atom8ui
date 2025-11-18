@@ -1,0 +1,18 @@
+uuid: e1d2c492-6f9f-44b8-96d0-0eef88d9395c
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.client
+id: group.client.label
+field_name: label
+entity_type: group
+bundle: client
+label: 'Client Name'
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

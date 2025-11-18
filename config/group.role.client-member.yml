@@ -1,0 +1,15 @@
+uuid: da671f7a-e97c-4dad-9081-358f8785efab
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.client
+    - user.role.authenticated
+id: client-member
+label: Member
+weight: -100
+admin: false
+scope: insider
+global_role: authenticated
+group_type: client
+permissions: {  }

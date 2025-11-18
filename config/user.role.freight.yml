@@ -1,9 +1,0 @@
-uuid: ae0a123a-396b-4b8b-827d-29b670b4418b
-langcode: en
-status: true
-dependencies: {  }
-id: freight
-label: Freight
-weight: -9
-is_admin: null
-permissions: {  }

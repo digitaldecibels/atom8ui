@@ -1,0 +1,28 @@
+uuid: 4d223732-9439-46cc-93e3-a40867fd05f7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.workflow.body
+    - node.type.workflow
+  module:
+    - text
+    - user
+id: node.workflow.default
+targetEntityType: node
+bundle: workflow
+mode: default
+content:
+  body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden: {  }
