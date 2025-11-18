@@ -1,0 +1,14 @@
+uuid: 9062452a-e553-4287-ab92-df0e59cf7bfb
+langcode: en
+status: true
+dependencies:
+  module:
+    - group
+id: group
+label: Group
+type: 'canonical_entities:group'
+pattern: '[group:title]'
+selection_criteria: {  }
+selection_logic: and
+weight: 0
+relationships: {  }

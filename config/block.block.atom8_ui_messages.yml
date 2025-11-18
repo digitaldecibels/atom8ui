@@ -11,7 +11,7 @@ _core:
 id: atom8_ui_messages
 theme: atom8_ui
 region: content
-weight: -2
+weight: -3
 provider: null
 plugin: system_messages_block
 settings:

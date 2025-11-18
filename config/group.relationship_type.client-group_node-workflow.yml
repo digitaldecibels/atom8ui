@@ -1,0 +1,17 @@
+uuid: 32745202-28ba-42af-b0ca-cb9ad7aa9bac
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.client
+    - node.type.workflow
+  module:
+    - gnode
+    - node
+id: client-group_node-workflow
+group_type: client
+content_plugin: 'group_node:workflow'
+plugin_config:
+  group_cardinality: 0
+  entity_cardinality: 1
+  use_creation_wizard: false

@@ -20,14 +20,10 @@ function n8nDashboard() {
 
                 const installData = await installResponse.json();
 
-                console.log(installData);
+
 
                 // Updated for new data structure
                 this.installs = installData || [];
-
-
-                console.log('istalls', this.installs);
-
 
             } catch (e) {
                 console.error(e);
@@ -54,7 +50,7 @@ function n8nDashboard() {
         setTimeout(() => {
 
 
-            const container = this.$refs.workfowsTable;
+            const container = this.$refs.workflowsTable;
 
             // First attach behaviors normally
             if (typeof Drupal !== 'undefined' && Drupal.attachBehaviors) {
@@ -104,9 +100,8 @@ function decodeHtml(html) {
 
 function reattachDrupalBehaviors(context) {
     if (typeof Drupal !== 'undefined' && typeof Drupal.attachBehaviors === 'function') {
-        console.log('Reattaching Drupal behaviors to:', context);
-        Drupal.attachBehaviors(context, drupalSettings);
-        console.log('Behaviors attached successfully');
+
+
     } else {
         console.error('Drupal.attachBehaviors not available');
     }
@@ -120,10 +115,10 @@ function installationsTable() {
         async fetchData() {
 
     try {
-        console.log('2. About to fetch');
+
         const response = await fetch('/rest/installations');
 
-        console.log('3. Fetch complete', response.ok);
+
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -186,3 +181,68 @@ function installationsTable() {
 }
 
 
+// user clients
+
+
+function userClients() {
+    return {
+        clients: [],
+        loading: false,
+        error: '',
+
+        async fetchData() {
+            this.loading = true;
+            this.error = '';
+            this.clients = [];
+
+            try {
+                const installResponse = await fetch('/rest/user/clients');
+                if (!installResponse.ok) throw new Error(`HTTP error! Status: ${installResponse.status}`);
+
+                const userClients = await installResponse.json();
+                console.log(userClients, 'this is the original user clients');
+
+                this.clients = userClients || [];
+                this.loading = false; // Set loading to false after successful fetch and data assignment
+
+                // 🌟 CRITICAL FIX: Use $nextTick to wait for DOM update 🌟
+                this.$nextTick(() => {
+                    const container = this.$refs.clientsTable;
+
+                    // Ensure Drupal is available before trying to use its functions
+                    if (typeof Drupal === 'undefined') {
+                        console.warn("Drupal environment not loaded. Skipping AJAX attachment.");
+                        return;
+                    }
+
+                    // 1. Attach general behaviors (e.g., for forms/fields within the table)
+                    if (Drupal.attachBehaviors) {
+                        // Pass drupalSettings if required by your setup
+                        Drupal.attachBehaviors(container, window.drupalSettings);
+                    }
+
+                    // 2. Specifically process AJAX links for the table
+                    if (Drupal.ajax) {
+                        // Select only elements that haven't been processed yet
+                        const ajaxLinks = container.querySelectorAll('a.use-ajax:not([data-drupal-ajax-processed]), button.use-ajax:not([data-drupal-ajax-processed])');
+
+                        ajaxLinks.forEach((element) => {
+                            // The check for 'data-drupal-ajax-processed' is already in the selector, but we keep the logic clean.
+                            Drupal.ajax({
+                                element: element,
+                                url: element.getAttribute('href') || element.getAttribute('data-dialog-url'),
+                                dialogType: element.getAttribute('data-dialog-type'),
+                                dialog: JSON.parse(element.getAttribute('data-dialog-options') || '{}')
+                            });
+                        });
+                    }
+                });
+
+            } catch (e) {
+                console.error(e);
+                this.error = `Failed to fetch clients: ${e.message}`; // Updated 'workflows' to 'clients' for clarity
+                this.loading = false; // Set loading to false on error too
+            }
+        }
+    }
+}

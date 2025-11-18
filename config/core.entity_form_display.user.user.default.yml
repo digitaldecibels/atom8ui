@@ -3,7 +3,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.user.user.field_address
     - field.field.user.user.field_dob
     - field.field.user.user.field_drivers_license_number
     - field.field.user.user.field_drivers_license_state
@@ -15,7 +14,6 @@ dependencies:
     - field.field.user.user.field_phone
     - field.field.user.user.field_sms
   module:
-    - address
     - datetime
     - telephone
     - user
@@ -28,13 +26,6 @@ content:
     weight: 0
     region: content
     settings: {  }
-    third_party_settings: {  }
-  field_address:
-    type: address_default
-    weight: 11
-    region: content
-    settings:
-      wrapper_type: fieldset
     third_party_settings: {  }
   field_dob:
     type: datetime_default

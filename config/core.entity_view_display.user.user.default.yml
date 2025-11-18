@@ -3,7 +3,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.user.user.field_address
     - field.field.user.user.field_dob
     - field.field.user.user.field_drivers_license_number
     - field.field.user.user.field_drivers_license_state
@@ -15,7 +14,6 @@ dependencies:
     - field.field.user.user.field_phone
     - field.field.user.user.field_sms
   module:
-    - address
     - datetime
     - options
     - user
@@ -24,13 +22,6 @@ targetEntityType: user
 bundle: user
 mode: default
 content:
-  field_address:
-    type: address_default
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    weight: 58
-    region: content
   field_dob:
     type: datetime_default
     label: above
