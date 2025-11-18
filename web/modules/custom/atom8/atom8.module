@@ -2,6 +2,21 @@
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\RedirectCommand;
+
+function atom8_theme() {
+  return [
+    'my_toggle_published' => [
+      'render element' => 'element',  // ✅ This should be at the TOP LEVEL
+      'template' => 'toggle-published',
+    ],
+  ];
+}
+function atom8_preprocess_my_toggle_published(&$variables) {
+  $element = $variables['element'] ?? [];
+
+
+}
+
 /**
  * Implements hook_form_FORM_ID_alter().
  */
@@ -20,4 +35,46 @@ function atom8_form_node_form_alter(&$form, FormStateInterface $form_state, $for
 
 
 
+}
+
+
+function atom8_form_group_client_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+
+  basic_form_alters($form, $form_state);
+
+
+
+}
+
+function basic_form_alters(&$form, FormStateInterface $form_state) {
+
+        if (isset($form['path'])) {
+        $form['path']['#access'] = FALSE;
+        }
+
+         if (isset($form['revision_information'])) {
+        $form['revision_information']['#access'] = FALSE;
+        }
+
+        unset($form['footer']);
+        unset($form['meta']);
+        unset($form['options']);
+        unset($form['advanced']);
+
+        $form['actions']['delete']['#attributes']['class'][] = 'flex-1 flex items-center justify-center w-full px-4 py-2 text-sm font-medium leading-5 text-white text-gray-700 transition-colors duration-150 border border-gray-300 rounded-lg dark:text-gray-400 active:bg-transparent hover:border-gray-500 focus:border-gray-500 active:text-gray-500 focus:outline-none focus:shadow-outline-gray';
+
+
+        // Check if status field exists
+        if (isset($form['status'])) {
+
+        // For boolean fields, the structure is usually:
+        $checkbox_element = &$form['status']['widget']['value'];
+
+        // Store the default value BEFORE setting theme
+        $default_value = $checkbox_element['#default_value'] ?? FALSE;
+        $checkbox_element['#attributes']['x-ref'] = 'drupalCheckbox';
+        $checkbox_element['#theme'] = 'my_toggle_published';
+        unset($checkbox_element['#title']);
+
+        }
 }

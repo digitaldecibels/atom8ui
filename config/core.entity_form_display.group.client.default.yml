@@ -1,0 +1,29 @@
+uuid: 07f03cd1-bd8e-401d-b37f-cdefb535d29c
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.client
+id: group.client.default
+targetEntityType: group
+bundle: client
+mode: default
+content:
+  label:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 1
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+hidden:
+  path: true
+  uid: true
