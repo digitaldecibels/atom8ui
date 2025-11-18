@@ -263,8 +263,8 @@ display:
           type: boolean
           settings:
             format: true-false
-            format_custom_false: ''
-            format_custom_true: ''
+            format_custom_false: 'false'
+            format_custom_true: 'true'
           group_column: value
           group_columns: {  }
           group_rows: true

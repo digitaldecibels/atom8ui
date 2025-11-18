@@ -4,7 +4,7 @@
 {{ attach_library('atom8_ui/admin_dash') }}
 
 
-       {# <pre x-text="JSON.stringify(clients, null, 2)"></pre> #}
+{# <pre x-text="JSON.stringify(clients, null, 2)"></pre> #}
 
 
 <div x-data="installationsTable()" x-init="fetchData()">
@@ -130,6 +130,7 @@
 										<td class="px-4 py-3 text-sm">
 											<span :class="workflow.active ? 'text-green-600' : 'text-gray-400'" x-text="workflow.active ? 'Active' : 'Inactive'"></span>
 
+
 										</td>
 										<td class="px-4 py-3 text-sm" x-text="workflow.id"></td>
 
@@ -200,15 +201,18 @@
 				<span x-text="error"></span>
 			</p>
 
-		{# clients table  #}
+			{# clients table  #}
 
-			<table x-ref="clientsTable" class="w-full" x-show="clients.length > 0 && !loading" >
+			<table x-ref="clientsTable" class="w-full" x-show="clients.length > 0 && !loading">
 				<thead>
 					<tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
 						<th class="px-4 py-3">Title</th>
+
+						<th class="px-4 py-3">Status</th>
+
+
 						<th class="px-4 py-3">Users</th>
 						<th class="px-4 py-3">Workflows</th>
-
 
 
 					</tr>
@@ -219,8 +223,6 @@
 					<template x-for="client in clients" :key="client.id">
 
 
-
-
 						<tr class="text-gray-700 dark:text-gray-400">
 							<td class="px-4 py-3 text-sm">
 
@@ -228,15 +230,18 @@
 									<span x-text="client.label"></span>
 
 
-                                   {# <pre x-text="JSON.stringify(clients, null, 2)"></pre> #}
 								</a>
+							</td>
+
+							<td>
+								<span class="text-sm" :class="client.status === 'True' ? 'text-green-600' : 'text-gray-400'" x-text="client.status === 'True' ? 'Active' : 'Inactive'"></span>
 							</td>
 
 
 							<td class="px-4 py-3 text-sm " {# @dragover.prevent @drop="dropWorkflow(client)" #}>
 
 								<template x-if="client.groups && client.groups.length > 0">
-							<template x-for="(user, uIndex) in client.groups" :key="uIndex">
+									<template x-for="(user, uIndex) in client.groups" :key="uIndex">
 										<span class="inline-flex flex-col mb-1 p-2 border border-gray-600 rounded-lg">
 											<span x-text="user.field_first_name + ' ' + user.field_last_name"></span>
 											<span class="text-purple-600 text-xs" x-text="user.mail"></span>
@@ -248,15 +253,33 @@
 							<td class="px-4 py-3 text-sm " {# @dragover.prevent @drop="dropWorkflow(client)" #}>
 
 
-							<template x-for="(workflow, wIndex) in client.workflows.filter(w => w.title)" :key="wIndex">
-  <span class="inline-flex flex-col mb-1 p-2 border border-gray-600 rounded-lg relative" >
-    <span x-text="workflow.title"></span>
-    <span class="text-purple-600 text-xs" x-text="workflow.field_id"></span>
+								<template x-for="(workflow, wIndex) in client.workflows.filter(w => w.title)" :key="wIndex">
+									<span class="inline-flex flex-col mb-1 p-2 border border-gray-600 rounded-lg relative" :title="workflow.title">
+										<span  class="max-w-sm overflow-hidden whitespace-nowrap text-ellipsis" x-text="workflow.title"></span>
+										<span class="text-purple-600 text-xs" x-text="workflow.field_id"></span>
 
 
-  </span>
-</template>
+									</span>
+								</template>
 							</td>
+
+
+							<td>
+								<button :href="'/group/'+ client.id +'/edit?destination={{ path('<current>')}}'" data-dialog-type="modal" data-dialog-options='{"width":600}' class=" use-ajax flex items-center justify-between px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
+
+
+									<svg class="w-4 h-4 mr-2 -ml-1" fill="currentColor" id='Plus_24' width='24' height='24' viewbox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'><rect width='24' height='24' stroke='none' fill='#000000' opacity='0'/>
+										<g transform="matrix(1 0 0 1 12 12)">
+											<path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4;  fill-rule: evenodd; opacity: 1;" transform=" translate(-12, -12)" d="M 11 2 L 11 11 L 2 11 L 2 13 L 11 13 L 11 22 L 13 22 L 13 13 L 22 13 L 22 11 L 13 11 L 13 2 Z" stroke-linecap="round"/>
+										</g>
+									</svg>
+
+
+									<span>Edit Details</span>
+								</button>
+							</td>
+
+
 						</tr>
 					</template>
 				</tbody>

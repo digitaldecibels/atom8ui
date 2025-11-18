@@ -2870,6 +2870,18 @@ select{
   max-width: 20rem;
 }
 
+.max-w-12{
+  max-width: 3rem;
+}
+
+.max-w-14{
+  max-width: 3.5rem;
+}
+
+.max-w-24{
+  max-width: 6rem;
+}
+
 .flex-1{
   flex: 1 1 0%;
 }
@@ -5042,6 +5054,10 @@ select{
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.text-ellipsis{
+  text-overflow: ellipsis;
 }
 
 .whitespace-normal{
