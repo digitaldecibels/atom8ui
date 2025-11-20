@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.user.user.field_first_name
     - field.field.user.user.field_last_name
+    - field.field.user.user.field_organization
   module:
     - user
 id: user.user.default
@@ -27,6 +28,14 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 52
+    region: content
+  field_organization:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 53
     region: content
   masquerade:
     settings: {  }

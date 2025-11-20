@@ -31,3 +31,9 @@ charts:
     js/charts-pie.js: { attributes: { defer: true } }
   dependencies:
     - THEMENAME/global-styling
+
+
+workflow_form:
+  version: 1.x
+  js:
+    js/workflow-form.js: {}

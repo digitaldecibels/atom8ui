@@ -98,3 +98,17 @@ function basic_form_alters(&$form, FormStateInterface $form_state) {
         unset($checkbox_element['#title']);
         }
 }
+
+
+
+
+// workflow form alter
+
+function atom8_form_node_workflow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+
+  dpm($form);
+
+  $form['workflow_select'] = [
+    '#markup' => '<div id="workflow-select">here here</div>',
+  ];
+}

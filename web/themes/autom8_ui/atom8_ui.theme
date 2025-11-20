@@ -10,5 +10,13 @@ function atom8_ui_preprocess(&$variables, $hook) {
     ->getPath();
 
 
- 
+
+}
+
+
+function atom8_ui_theme_suggestions_form_alter(array &$suggestions, array $variables) {
+  if (!empty($variables['element']['#form_id']) && $variables['element']['#form_id'] === 'node_workflow_form') {
+    // Add a suggestion which becomes form--node-workflow-form.html.twig
+    $suggestions[] = 'form__node_workflow_form';
+  }
 }
