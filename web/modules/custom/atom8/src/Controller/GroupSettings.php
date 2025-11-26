@@ -9,11 +9,14 @@ class GroupSettings extends ControllerBase {
   /**
    * Returns a list of API keys.
    */
-  public function settings() {
+  public function settings($gid) {
+
+
     // Return a render array, table, or markup here.
     return [
       '#markup' => 'Group Settings',
       '#theme' => 'atom8_group_settings',
+      '#gid'=> $gid
     ];
   }
 }

@@ -30,10 +30,20 @@ charts:
     js/charts-lines.js: { attributes: { defer: true } }
     js/charts-pie.js: { attributes: { defer: true } }
   dependencies:
-    - THEMENAME/global-styling
+    - atom8_ui/global-styling
 
 
 group_settings:
   version: 1.x
   js:
     js/group-settings.js: {}
+  dependencies:
+    - atom8_ui/sortable
+
+sortable:
+  version: 1.x
+  js:
+    js/Sortable.min.js: {}
+  dependencies:
+        - core/jquery
+        - core/drupal

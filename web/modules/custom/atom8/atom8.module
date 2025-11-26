@@ -20,7 +20,8 @@ function atom8_theme() {
 
     'atom8_group_settings' => [ // This is the name used in '#theme'
       'variables' => [
-        'workflows' => [],     // Defines the variable expected by the template
+        'workflows' => [],
+        'gid'=> '',    // Defines the variable expected by the template
       ],
     // The template file to use, relative to the module root.
     // Drupal will look for: 'templates/atom8-workflow-list.html.twig'
