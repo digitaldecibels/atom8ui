@@ -946,6 +946,10 @@ select{
   bottom: auto;
 }
 
+.bottom-full{
+  bottom: 100%;
+}
+
 .left-0{
   left: 0px;
 }
@@ -976,10 +980,6 @@ select{
 
 .top-full{
   top: 100%;
-}
-
-.bottom-full{
-  bottom: 100%;
 }
 
 .z-0{
@@ -2648,6 +2648,10 @@ select{
 
 .h-8{
   height: 2rem;
+}
+
+.h-96{
+  height: 24rem;
 }
 
 .h-\[100vh\]{
@@ -7225,6 +7229,10 @@ select{
   line-height: 1;
 }
 
+.text-\[8px\]{
+  font-size: 8px;
+}
+
 .text-base{
   font-size: 1rem;
   line-height: 1.5rem;
@@ -7248,18 +7256,6 @@ select{
 .text-xs{
   font-size: 0.75rem;
   line-height: 1rem;
-}
-
-.text-\[12px\]{
-  font-size: 12px;
-}
-
-.text-\[10px\]{
-  font-size: 10px;
-}
-
-.text-\[8px\]{
-  font-size: 8px;
 }
 
 .font-black{
@@ -8343,10 +8339,6 @@ div.description{
   background-color: var(--color-purple-700);
 }
 
-.hover\:bg-purple-600:hover{
-  background-color: var(--color-purple-600);
-}
-
 .hover\:text-gray-800:hover{
   color: var(--color-gray-800);
 }
@@ -8407,18 +8399,6 @@ div.description{
 
 .active\:bg-purple-600:active{
   background-color: var(--color-purple-600);
-}
-
-.group:hover .group-hover\:relative{
-  position: relative;
-}
-
-.group:hover .group-hover\:top-full{
-  top: 100%;
-}
-
-.group:hover .group-hover\:bottom-full{
-  bottom: 100%;
 }
 
 .group:hover .group-hover\:opacity-100{

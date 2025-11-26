@@ -21,7 +21,7 @@ function groupSettings() {
     users: [],
     isLoading: true, // Primary loading flag: Start as TRUE
     error: null,
-    group_workflows: [];
+    group_workflows: [],
 
 
 async fetchData() {
@@ -79,6 +79,37 @@ async fetchData() {
         }
       }
 
+
+
+      // get group workflows
+
+
+      //   try {
+      //     const response = await fetch('/rest/group/workflows/1');
+      //     if (!response.ok)
+      //       throw new Error(`HTTP error! Status: ${response.status}`);
+
+      //     const groupFlows = await response.json();
+      //     const fetchedgroupFlows = data.data || [];
+
+      //     const newWorkflows = fetchedWorkflows.map(workflow => ({
+      //         ...workflow, // Keep all existing workflow properties (id, name, etc.)
+      //         install_title: install.title, // Assuming 'title' exists on the install object
+      //         install_host: install.field_host, // Host URL
+      //         install_type: install.field_type || 'n8n', // Assuming 'field_type' exists (or a default)
+      //     }));
+
+      //     // Combine the new, augmented workflows into the main array.
+      //     this.workflows = [...this.workflows, ...newWorkflows];
+
+
+
+      //   } catch (e) {
+      //     // Log an error but continue to the next installation
+      //     console.error(`Failed to fetch workflows for ${host}:`, e);
+      //     // Optional: Update a list of failed installations/errors if needed
+      //   }
+      // }
 
 
 
