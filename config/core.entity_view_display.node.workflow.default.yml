@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.workflow.field_id
     - field.field.node.workflow.field_install
+    - field.field.node.workflow.field_widgets
     - node.type.workflow
   module:
     - user
@@ -28,6 +29,13 @@ content:
       link: true
     third_party_settings: {  }
     weight: 102
+    region: content
+  field_widgets:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 103
     region: content
   links:
     settings: {  }

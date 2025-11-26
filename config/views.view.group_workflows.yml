@@ -3,12 +3,15 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.storage.node.field_host
     - field.storage.node.field_id
     - field.storage.node.field_install
     - group.type.client
     - user.role.authenticated
   module:
+    - editablefields
     - group
+    - link
     - node
     - rest
     - serialization
@@ -28,6 +31,79 @@ display:
     position: 0
     display_options:
       fields:
+        uuid:
+          id: uuid
+          table: node
+          field: uuid
+          relationship: gc__node
+          group_type: group
+          admin_label: ''
+          entity_type: node
+          entity_field: uuid
+          plugin_id: field
+          label: ''
+          exclude: false
+          alter:
+            alter_text: true
+            text: '{{ uuid__value }} '
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: editablefields_formatter
+          settings:
+            form_mode: default
+            behaviour: inline
+            bypass_access: 0
+            fallback_access: 0
+            display_mode_access: default
+            fallback_edit: 0
+            display_mode_edit: default
+            fields_ajax_trigger: ''
+            fields_ajax_trigger_event: change
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
         field_id:
           id: field_id
           table: node__field_id
@@ -285,6 +361,73 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+        field_host:
+          id: field_host
+          table: node__field_host
+          field: field_host
+          relationship: field_install
+          group_type: group
+          admin_label: ''
+          plugin_id: field
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: uri
+          type: link
+          settings:
+            trim_length: 80
+            url_only: true
+            url_plain: true
+            rel: '0'
+            target: '0'
+          group_column: ''
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
       pager:
         type: mini
         options:
@@ -482,6 +625,15 @@ display:
             'group_node:installation': '0'
             'group_node:page': '0'
             'group_node:workflow': '0'
+        field_install:
+          id: field_install
+          table: node__field_install
+          field: field_install
+          relationship: gc__node
+          group_type: group
+          admin_label: 'field_install: Content'
+          plugin_id: standard
+          required: false
       group_by: false
       header: {  }
       footer: {  }
@@ -495,6 +647,7 @@ display:
         - url.query_args
         - user.roles
       tags:
+        - 'config:field.storage.node.field_host'
         - 'config:field.storage.node.field_id'
         - 'config:field.storage.node.field_install'
   page_1:
@@ -514,6 +667,7 @@ display:
         - url.query_args
         - user.roles
       tags:
+        - 'config:field.storage.node.field_host'
         - 'config:field.storage.node.field_id'
         - 'config:field.storage.node.field_install'
   rest_export_1:
@@ -537,8 +691,23 @@ display:
         type: data_field
         options:
           field_options:
-            label:
+            field_id:
+              alias: id
+              raw_output: false
+            field_install:
               alias: ''
+              raw_output: false
+            title:
+              alias: ''
+              raw_output: false
+            nid:
+              alias: ''
+              raw_output: false
+            field_host:
+              alias: host
+              raw_output: false
+            nothing:
+              alias: uuid
               raw_output: false
       display_extenders: {  }
       path: rest/group/workflows
@@ -551,5 +720,6 @@ display:
         - url
         - user.roles
       tags:
+        - 'config:field.storage.node.field_host'
         - 'config:field.storage.node.field_id'
         - 'config:field.storage.node.field_install'

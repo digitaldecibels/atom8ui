@@ -6504,6 +6504,10 @@ select{
   fill: #ffffff;
 }
 
+.fill-black{
+  fill: #000000;
+}
+
 .stroke-0{
   stroke-width: 0;
 }
@@ -8347,6 +8351,22 @@ div.description{
   background-color: var(--color-purple-800);
 }
 
+.hover\:bg-gray-900:hover{
+  background-color: var(--color-gray-900);
+}
+
+.hover\:bg-red-600:hover{
+  background-color: var(--color-red-600);
+}
+
+.hover\:bg-green-700:hover{
+  background-color: var(--color-green-700);
+}
+
+.hover\:bg-green-600:hover{
+  background-color: var(--color-green-600);
+}
+
 .hover\:text-gray-800:hover{
   color: var(--color-gray-800);
 }
@@ -8409,6 +8429,33 @@ div.description{
   background-color: var(--color-purple-600);
 }
 
+.group:hover .group-hover\:bg-gray-900{
+  background-color: var(--color-gray-900);
+}
+
+.group:hover .group-hover\:bg-purple-700{
+  background-color: var(--color-purple-700);
+}
+
+.group:hover .group-hover\:bg-white{
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+}
+
+.group:hover .group-hover\:fill-white{
+  fill: #ffffff;
+}
+
+.group:hover .group-hover\:text-white{
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
+
+.group:hover .group-hover\:text-black{
+  --tw-text-opacity: 1;
+  color: rgb(0 0 0 / var(--tw-text-opacity, 1));
+}
+
 .group:hover .group-hover\:opacity-100{
   opacity: 1;
 }
@@ -8448,6 +8495,10 @@ div.description{
 
 .dark\:bg-red-600:is(.dark *){
   background-color: var(--color-red-600);
+}
+
+.dark\:fill-white:is(.dark *){
+  fill: #ffffff;
 }
 
 .dark\:text-gray-100:is(.dark *){
@@ -8531,4 +8582,60 @@ div.description{
   .lg\:mr-32{
     margin-right: 8rem;
   }
+
+  .lg\:flex-row{
+    flex-direction: row;
+  }
+}
+
+@media (min-width: 1280px){
+  .xl\:flex-row{
+    flex-direction: row;
+  }
+}
+
+.\[\&\:hover\>td\]\:bg-green-600:hover>td{
+  background-color: var(--color-green-600);
+}
+
+.\[\&\:hover\>td\]\:bg-purple-600:hover>td{
+  background-color: var(--color-purple-600);
+}
+
+.\[\&\:hover\>td\]\:bg-black:hover>td{
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 0 0 / var(--tw-bg-opacity, 1));
+}
+
+.\[\&\:hover\>td\]\:bg-gray-300:hover>td{
+  background-color: var(--color-gray-300);
+}
+
+.\[\&\:hover\>td\]\:bg-gray-100:hover>td{
+  background-color: var(--color-gray-100);
+}
+
+.dark\:\[\&\:hover\>td\]\:bg-black:hover>td:is(.dark *){
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 0 0 / var(--tw-bg-opacity, 1));
+}
+
+.\[\&\:td\]\:transition-colors:td{
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.\[\&_td\]\:cursor-move td{
+  cursor: move;
+}
+
+.\[\&_td\]\:transition-colors td{
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.\[\&_td\]\:duration-300 td{
+  transition-duration: 300ms;
 }

@@ -46,7 +46,7 @@ function groupSettings() {
     async init() {
       await this.fetchCsrfToken();
       await this.fetchData();
-       await this.fetchDashboardWorkflows();
+      await this.fetchDashboardWorkflows();
 
       this.$nextTick(() => {
         this.initSortable();
@@ -63,121 +63,162 @@ function groupSettings() {
       }
     },
 
-    // Add this new method after fetchCsrfToken()
-// Fetch existing dashboard workflows for this group
-async fetchDashboardWorkflows() {
-  if (!this.groupId) {
-    console.warn('No group ID provided, skipping dashboard workflows fetch');
-    return;
-  }
+    // Fetch existing dashboard workflows for this group
+    async fetchDashboardWorkflows() {
+      if (!this.groupId) {
+        console.warn('No group ID provided, skipping dashboard workflows fetch');
+        return;
+      }
 
-  try {
-    const response = await fetch(`/rest/group/workflows/${this.groupId}`);
+      try {
+        const response = await fetch(`/rest/group/workflows/${this.groupId}`);
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
 
-    const existingWorkflows = await response.json();
+        const existingWorkflows = await response.json();
 
-          console.log(existingWorkflows);
+        console.log('Existing workflows from REST:', existingWorkflows);
 
-    // The REST endpoint should return workflow objects with an 'id' field
-    // that matches the n8n workflow IDs
-    // Example: [{id: "123", name: "My Workflow", ...}, ...]
+        // Match each saved workflow with the full workflow data from this.workflows
+        this.dashboardWorkflows = existingWorkflows.map(savedWorkflow => {
+          const fullWorkflow = this.workflows.find(w => w.id === savedWorkflow.id);
 
-    // Match each saved workflow with the full workflow data from this.workflows
-    this.dashboardWorkflows = existingWorkflows.map(savedWorkflow => {
-      // Find the full workflow object from the main workflows array
-      // This ensures we have all the n8n workflow data (install_host, install_type, etc.)
-      const fullWorkflow = this.workflows.find(w => w.id === savedWorkflow.id);
+          // Merge the data, ensuring we keep the nodeUuid from the saved workflow
+          if (fullWorkflow) {
+            return {
+              ...fullWorkflow,
+              nodeUuid: savedWorkflow.uuid || savedWorkflow.nodeUuid, // Keep the Drupal node UUID
+              drupalNodeId: savedWorkflow.nid || savedWorkflow.drupalNodeId // Optional: keep the node ID too
+            };
+          }
 
-      // If found in workflows list, use that data
-      // Otherwise, use what we have from the REST endpoint
-      return fullWorkflow || savedWorkflow;
-    }).filter(w => w); // Filter out any null/undefined values
+          return {
+            ...savedWorkflow,
+            nodeUuid: savedWorkflow.uuid || savedWorkflow.nodeUuid,
+            drupalNodeId: savedWorkflow.nid || savedWorkflow.drupalNodeId
+          };
+        }).filter(w => w);
 
-    console.log('Loaded dashboard workflows:', this.dashboardWorkflows);
+        console.log('Loaded dashboard workflows:', this.dashboardWorkflows);
 
-
-  } catch (e) {
-    console.error('Failed to fetch dashboard workflows:', e);
-    // Don't set this.error here - it's not critical, just log it
-  }
-},
-
+      } catch (e) {
+        console.error('Failed to fetch dashboard workflows:', e);
+      }
+    },
 
     // Create a new workflow node via JSON:API
-async createWorkflowNode(workflow) {
-  if (!this.csrfToken) {
-    throw new Error('CSRF token not available');
-  }
+    async createWorkflowNode(workflow) {
+      if (!this.csrfToken) {
+        throw new Error('CSRF token not available');
+      }
 
-  // Find the install object to get its node ID
-  const install = this.installs.find(i => i.field_host === workflow.install_host);
+      // Find the install object to get its UUID
+      const install = this.installs.find(i => i.field_host === workflow.install_host);
 
-  if (!install) {
-    throw new Error('Install not found for workflow');
-  }
+      if (!install) {
+        throw new Error('Install not found for workflow');
+      }
 
-  // Build the JSON:API payload
-  const payload = {
-    data: {
-      type: 'node--workflow',
-      attributes: {
-        title: workflow.name,
-        field_id: workflow.id,
-
-        // Add any other non-reference fields here
-      },
-      relationships: {
-        field_install: {
-          data: {
-            type: 'node--installation', // Adjust this to match your installation content type machine name
-            id: install.uuid // Use the UUID of the installation node
+      // Build the JSON:API payload
+      const payload = {
+        data: {
+          type: 'node--workflow',
+          attributes: {
+            title: workflow.name,
+            field_id: workflow.id,
+            // Add any other non-reference fields here
+          },
+          relationships: {
+            field_install: {
+              data: {
+                type: 'node--installation',
+                id: install.uuid
+              }
+            }
           }
         }
+      };
+
+      try {
+        const response = await fetch('/jsonapi/node/workflow', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/vnd.api+json',
+            'Accept': 'application/vnd.api+json',
+            'X-CSRF-Token': this.csrfToken
+          },
+          credentials: 'same-origin',
+          body: JSON.stringify(payload)
+        });
+
+        const json = await response.json();
+
+        if (!response.ok) {
+          const error = json.errors && json.errors[0]
+            ? json.errors[0].detail
+            : 'Failed to create workflow';
+          throw new Error(error);
+        }
+
+        console.log('Workflow node created:', json);
+
+        const createdNodeId = json.data.attributes.drupal_internal__nid;
+        const createdNodeUuid = json.data.id; // This is the UUID
+
+
+        // Store the UUID in the workflow object for later deletion
+        workflow.nodeUuid = createdNodeUuid;
+        workflow.drupalNodeId = createdNodeId;
+
+           console.log(workflow ,'jsp data!');
+        // If you have a group ID, add the node to the group
+        if (this.groupId) {
+          await this.addNodeToGroup(createdNodeId);
+        }
+
+        return json.data;
+
+      } catch (e) {
+        console.error('Error creating workflow node:', e);
+        throw e;
       }
-    }
-  };
+    },
 
-  try {
-    const response = await fetch('/jsonapi/node/workflow', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/vnd.api+json',
-        'Accept': 'application/vnd.api+json',
-        'X-CSRF-Token': this.csrfToken
-      },
-      credentials: 'same-origin',
-      body: JSON.stringify(payload)
-    });
+    // Delete a workflow node via JSON:API
+    async deleteWorkflowNode(nodeUuid) {
+      if (!this.csrfToken) {
+        throw new Error('CSRF token not available');
+      }
 
-    const json = await response.json();
+      try {
+        const response = await fetch(`/jsonapi/node/workflow/${nodeUuid}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/vnd.api+json',
+            'Accept': 'application/vnd.api+json',
+            'X-CSRF-Token': this.csrfToken
+          },
+          credentials: 'same-origin'
+        });
 
-    if (!response.ok) {
-      const error = json.errors && json.errors[0]
-        ? json.errors[0].detail
-        : 'Failed to create workflow';
-      throw new Error(error);
-    }
+        if (!response.ok) {
+          const json = await response.json();
+          const error = json.errors && json.errors[0]
+            ? json.errors[0].detail
+            : 'Failed to delete workflow';
+          throw new Error(error);
+        }
 
-    console.log('Workflow node created:', json);
+        console.log('Workflow node deleted:', nodeUuid);
+        return true;
 
-    const createdNodeId = json.data.attributes.drupal_internal__nid;
-
-    // If you have a group ID, add the node to the group
-    if (this.groupId) {
-      await this.addNodeToGroup(createdNodeId);
-    }
-
-    return json.data;
-
-  } catch (e) {
-    console.error('Error creating workflow node:', e);
-    throw e;
-  }
-},
+      } catch (e) {
+        console.error('Error deleting workflow node:', e);
+        throw e;
+      }
+    },
 
     // Add the created node to a group
     async addNodeToGroup(nodeId) {
@@ -225,10 +266,30 @@ async createWorkflowNode(workflow) {
     },
 
     // Remove workflow from dashboard
-    removeFromDashboard(workflowId) {
-      this.dashboardWorkflows = this.dashboardWorkflows.filter(
-        (w) => w.id !== workflowId
-      );
+    async removeFromDashboard(workflowId, nodeUuid = null) {
+      try {
+        // If we have the node UUID, delete it via JSON:API
+        if (nodeUuid) {
+          await this.deleteWorkflowNode(nodeUuid);
+        } else {
+          // If no UUID provided, we need to find it from the workflow
+          const workflow = this.dashboardWorkflows.find(w => w.id === workflowId);
+          if (workflow && workflow.nodeUuid) {
+            await this.deleteWorkflowNode(workflow.nodeUuid);
+          } else {
+            console.warn('No node UUID found for workflow', workflowId);
+          }
+        }
+
+        // Remove from the array regardless of deletion success
+        this.dashboardWorkflows = this.dashboardWorkflows.filter(
+          (w) => w.id !== workflowId
+        );
+
+      } catch (e) {
+        console.error('Failed to remove workflow:', e);
+        alert('Failed to remove workflow: ' + e.message);
+      }
     },
 
     // Initializes SortableJS on both containers
@@ -274,11 +335,11 @@ async createWorkflowNode(workflow) {
           evt.item.remove();
         },
 
-        onRemove: function (evt) {
+        onRemove: async function (evt) {
           const workflowId = evt.item.dataset.workflowId;
-          self.dashboardWorkflows = self.dashboardWorkflows.filter(
-            (w) => w.id !== workflowId
-          );
+
+          // Call the async removeFromDashboard method
+          await self.removeFromDashboard(workflowId);
         },
 
         onUpdate: function (evt) {

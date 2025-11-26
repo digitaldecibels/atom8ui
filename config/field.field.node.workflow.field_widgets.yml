@@ -1,0 +1,19 @@
+uuid: 6c65005f-fb8d-4026-8749-398160edf1bb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_widgets
+    - node.type.workflow
+id: node.workflow.field_widgets
+field_name: field_widgets
+entity_type: node
+bundle: workflow
+label: Widgets
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

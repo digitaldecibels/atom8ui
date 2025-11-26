@@ -4,22 +4,21 @@
 {{ attach_library('atom8_ui/group_settings') }}
 
 
-
 <div x-data="groupSettings()" x-init="groupId = {{ gid }}; init()" class="w-full    mt-12  ">
 
-	<div class="flex gap-4">
-		<div class="w-full rounded-lg shadow-xs bg-white dark:bg-gray-800  mb-8     p-4">
+	<div class="flex flex-col gap-4 xl:flex-row">
+		<div class="w-full rounded-lg shadow-xs bg-white dark:bg-gray-800     p-4">
 
 			<h2 class="border-b pb-2">Available Workflows</h2>
 
 			<div class="mb-4">
-				<div class="flex gap-2 items-stretch  mt-4 ">
+				<div class="flex gap-2 items-stretch   mt-4 ">
 					<input type="text" x-model="searchTerm" placeholder="Search by workflow name..." class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200">
-					<button @click="searchTerm = ''" class=" text-white bg-purple-600 px-4 py-2 rounded-md text-xs font-light hover:bg-purple-800 transition-all">Clear</button>
+					<button @click="searchTerm = ''" class="  text-white bg-purple-600 px-4 py-2 rounded-md text-xs font-light hover:bg-purple-800 transition-all">Clear</button>
 				</div>
 			</div>
 
-			<div class=" overflow-scroll h-96">
+			<div class="overflow-scroll h-96">
 				<template x-if="!isLoading && !error">
 					<div>
 						<!-- Workflows Table -->
@@ -29,36 +28,29 @@
 
 							{# workflow tables  #}
 
-							<table x-ref="workflowsTable" class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-								<thead>
-									<tr class="bg-gray-100 dark:bg-gray-800">
-										<th class="px-4 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-400">Name</th>
-										<th class="px-4 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-400">Type</th>
-										<th class="px-4 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-400">Status</th>
+							<table x-ref="workflowsTable" class="min-w-full   ">
 
-									</tr>
-								</thead>
 								<tbody class="divide-y divide-gray-200 dark:divide-gray-700" id="available-workflows-list">
 
 
 									<template x-for="workflow in filteredWorkflows" :key="workflow.id">
-										<tr class="text-gray-700 dark:text-gray-400 drag-handle  bg-white dark:bg-gray-800" :data-workflow-id="workflow.id">
+										<tr class="text-gray-700 dark:text-gray-400 group drag-handle  bg-white dark:bg-gray-800 [&_td]:cursor-move [&_td]:transition-colors [&_td]:duration-300 [&:hover>td]:bg-gray-100 dark:[&:hover>td]:bg-black" :data-workflow-id="workflow.id">
 											<td class="px-4 py-3 text-sm">
 
 												<div class="inline-flex gap-4 cursor-move items-center ">
 
-													<svg class="fill-white " id='Drag_24' width='24' height='24' viewbox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'><rect width='24' height='24' stroke='none' opacity='0'/>
+													<svg class="fill-back dark:fill-white   " id='Drag_24' width='24' height='24' viewbox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'><rect width='24' height='24' stroke='none' opacity='0'/>
 														<g transform="matrix(0.83 0 0 0.83 12 12)">
 															<path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4;   fill-rule: nonzero; opacity: 1;" transform=" translate(-15, -15)" d="M 14.984375 2.9863281 C 14.679232719304073 2.991113424230346 14.392974340915222 3.1349618093187295 14.207031 3.3769531 C 14.205722127743346 3.3789016433998924 14.204420119674234 3.38085478883772 14.203125 3.3828125 L 11.292969 6.2929688 C 11.031731108787561 6.543786003039588 10.92649848082709 6.9162349851687335 11.017855648687851 7.266675241169932 C 11.109212816548611 7.61711549717113 11.382884250849262 7.890787008886047 11.73332448100797 7.982144275876887 C 12.08376471116668 8.073501542867726 12.456213723063279 7.968269020263017 12.707031 7.707031200000001 L 14 6.4140625 L 14 14 L 6.4140625 14 L 7.7070312 12.707031 C 8.00279179498787 12.419539617579169 8.091720245145614 11.97996487028792 7.930965951618407 11.600117951613584 C 7.770211658091198 11.220271032939248 7.3927524296244504 10.978075329944932 6.9804688 10.990234 C 6.7206700905992 10.997975294585906 6.474090306709873 11.106554684950613 6.2929688 11.292969 L 3.3808594 14.205078 C 3.1333280556050696 14.393718289845767 2.987723307948288 14.68684177364622 2.9869576955959163 14.998059284800046 C 2.986192083243544 15.309276795953874 3.130352877194585 15.603113119070867 3.3769530999999997 15.792969 C 3.3789016433998924 15.794277872256654 3.3808547888377194 15.795579880325766 3.3828124999999996 15.796875 L 6.2929688 18.707031 C 6.543786003039588 18.96826889121244 6.916234985168734 19.07350151917291 7.266675241169932 18.98214435131215 C 7.617115497171131 18.89078718345139 7.890787008886049 18.617115749150738 7.9821442758768875 18.26667551899203 C 8.073501542867726 17.91623528883332 7.968269020263018 17.54378627693672 7.7070312 17.292969 L 6.4140625 16 L 14 16 L 14 23.585938 L 12.707031 22.292969 C 12.518759981155519 22.0994359864488 12.260235858549075 21.990249842732712 11.990234 21.990234 C 11.583310933388129 21.990341027517083 11.217025100118086 22.236989716506184 11.063903235086288 22.614004421849202 C 10.910781370054488 22.991019127192217 11.001357595904953 23.423219121112922 11.292969 23.707031 L 14.205078 26.619141 C 14.393718336632448 26.866672308471262 14.686841847766381 27.012277000550593 14.998059358851563 27.01304255410452 C 15.309276869936745 27.01380810765845 15.60311316564122 26.869647258390437 15.792969 26.623047 C 15.794277871462644 26.621098589715807 15.795579879530992 26.61914557761328 15.796875 26.617188 L 18.707031 23.707031 C 18.968271794792877 23.45621442686285 19.07350663500295 23.083764007781856 18.982149810984033 22.73332194847753 C 18.89079298696512 22.382879889173207 18.617120110826793 22.10920701303488 18.26667805152247 22.017850189015967 C 17.916235992218144 21.92649336499705 17.54378557313715 22.031728205207123 17.292969 22.292969 L 16 23.585938 L 16 16 L 23.585938 16 L 22.292969 17.292969 C 22.031728205207123 17.54378557313715 21.92649336499705 17.916235992218144 22.017850189015967 18.26667805152247 C 22.10920701303488 18.617120110826793 22.382879889173207 18.89079298696512 22.73332194847753 18.982149810984033 C 23.083764007781856 19.07350663500295 23.45621442686285 18.968271794792877 23.707031 18.707031 L 26.619141 15.794922 C 26.866672308471262 15.606281663367552 27.012277000550593 15.313158152233619 27.01304255410452 15.001940641148437 C 27.01380810765845 14.690723130063255 26.869647258390437 14.39688683435878 26.623047 14.207031 C 26.621098589715807 14.205722128537356 26.61914557761328 14.204420120469008 26.617188 14.203125 L 23.707031 11.292969 C 23.51875998115552 11.099435986448801 23.260235858549077 10.990249842732712 22.990234 10.990234 C 22.58331093338813 10.99034102751708 22.217025100118086 11.236989716506182 22.063903235086286 11.614004421849199 C 21.910781370054487 11.991019127192217 22.001357595904953 12.423219121112922 22.292969 12.707031 L 23.585938 14 L 16 14 L 16 6.4140625 L 17.292969 7.7070312 C 17.54378627693672 7.968269020263017 17.91623528883332 8.073501542867726 18.266675518992027 7.982144275876887 C 18.617115749150738 7.890787008886048 18.890787183451387 7.61711549717113 18.982144351312147 7.266675241169932 C 19.073501519172908 6.9162349851687335 18.96826889121244 6.543786003039589 18.707031 6.2929688 L 15.791016 3.3769531 C 15.59879373144233 3.1268098193024647 15.29981525485305 2.9820261207083107 14.984375 2.9863281 z" stroke-linecap="round"/>
 														</g>
 													</svg>
 
-													<span class="flex flex-col">
-														<div class="pb-2" x-text="workflow.name"></div>
+													<span class="flex flex-col transition-colors duration-300">
+														<div class="pb-2  " x-text="workflow.name"></div>
 
 														<div class="flex gap-2">
-															<span class="text-white text-xs font-light" x-text="workflow.install_host"></span>
-															<span class="text-purple-600 text-xs font-light" x-text="workflow.id"></span>
+															<span class="text-gray-700 dark:text-white text-xs font-light  " x-text="workflow.install_host"></span>
+															<span class="text-purple-600 text-xs font-light  " x-text="workflow.id"></span>
 
 														</div>
 
@@ -68,23 +60,19 @@
 
 											</td>
 											<td class="px-4 py-3 text-sm">
-												<span x-text="workflow.install_type"></span>
+												<span class=" " x-text="workflow.install_type"></span>
 
 
 											</td>
 											<td class="px-4 py-3 text-sm">
-												<span :class="workflow.active ? 'text-green-600' : 'text-gray-400'" x-text="workflow.active ? 'Active' : 'Inactive'"></span>
+												<span class="rounded-full w-2 h-2 block " :class="workflow.active ? 'bg-green-600' : 'bg-gray-400'"></span>
 
 
 											</td>
 
-											<td>
-												<button @click="addToDashboard(workflow.id)" class="flex gap-2 items-center text-white bg-purple-600 px-2 py-1 rounded-md text-xs font-light hover:bg-purple-800 transition-all">
-													<svg class="fill-white w-4 h-4" id='Plus_24' width='24' height='24' viewbox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'><rect width='24' height='24' stroke='none' fill='#fffff' opacity='0'/>
-														<g transform="matrix(0.43 0 0 0.43 12 12)">
-															<path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4;   fill-rule: nonzero; opacity: 1;" transform=" translate(-25, -25)" d="M 25 2 C 12.309295 2 2 12.309295 2 25 C 2 37.690705 12.309295 48 25 48 C 37.690705 48 48 37.690705 48 25 C 48 12.309295 37.690705 2 25 2 z M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z M 24 13 L 24 24 L 13 24 L 13 26 L 24 26 L 24 37 L 26 37 L 26 26 L 37 26 L 37 24 L 26 24 L 26 13 L 24 13 z" stroke-linecap="round"/>
-														</g>
-													</svg>
+											<td class="px-4 py-3">
+												<button @click="addToDashboard(workflow.id)" class="flex gap-2 items-center text-white bg-purple-600 px-2 py-1 rounded-md text-xs font-light transition-all duration-300    hover:bg-green-600">
+
 													Add</button>
 											</td>
 
@@ -107,26 +95,38 @@
 			<h2 class="border-b pb-2">Dashboard Workflows</h2>
 
 			<div class="card overflow-x-auto">
+
+
 				<table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-					<tbody id="dashboard-workflows-list">
+
+
+					<tbody class="divide-y divide-gray-200 dark:divide-gray-700" id="dashboard-workflows-list">
+
+						<tr x-show="dashboardWorkflows.length == 0">
+							<td>
+								<div class="text-center text-lg p-8 border border-dashed rounded-md mt-8">Drag workflows here
+								</div>
+							</td>
+						</tr>
+
 						<template x-for="workflow in dashboardWorkflows" :key="workflow.id">
-							<tr class="text-gray-700 dark:text-gray-400 drag-handle" :data-workflow-id="workflow.id">
+							<tr class="text-gray-700 dark:text-gray-400 group drag-handle [&_td]:cursor-move [&_td]:transition-colors [&_td]:duration-300 [&:hover>td]:bg-gray-100 dark:[&:hover>td]:bg-black" :data-workflow-id="workflow.id">
 								<td class="px-4 py-3 text-sm">
 
 									<div class="inline-flex gap-4 cursor-move items-center ">
 
-										<svg class="fill-white " id='Drag_24' width='24' height='24' viewbox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'><rect width='24' height='24' stroke='none' opacity='0'/>
+										<svg class="fill-black dark:fill-white   " id='Drag_24' width='24' height='24' viewbox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'><rect width='24' height='24' stroke='none' opacity='0'/>
 											<g transform="matrix(0.83 0 0 0.83 12 12)">
 												<path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4;   fill-rule: nonzero; opacity: 1;" transform=" translate(-15, -15)" d="M 14.984375 2.9863281 C 14.679232719304073 2.991113424230346 14.392974340915222 3.1349618093187295 14.207031 3.3769531 C 14.205722127743346 3.3789016433998924 14.204420119674234 3.38085478883772 14.203125 3.3828125 L 11.292969 6.2929688 C 11.031731108787561 6.543786003039588 10.92649848082709 6.9162349851687335 11.017855648687851 7.266675241169932 C 11.109212816548611 7.61711549717113 11.382884250849262 7.890787008886047 11.73332448100797 7.982144275876887 C 12.08376471116668 8.073501542867726 12.456213723063279 7.968269020263017 12.707031 7.707031200000001 L 14 6.4140625 L 14 14 L 6.4140625 14 L 7.7070312 12.707031 C 8.00279179498787 12.419539617579169 8.091720245145614 11.97996487028792 7.930965951618407 11.600117951613584 C 7.770211658091198 11.220271032939248 7.3927524296244504 10.978075329944932 6.9804688 10.990234 C 6.7206700905992 10.997975294585906 6.474090306709873 11.106554684950613 6.2929688 11.292969 L 3.3808594 14.205078 C 3.1333280556050696 14.393718289845767 2.987723307948288 14.68684177364622 2.9869576955959163 14.998059284800046 C 2.986192083243544 15.309276795953874 3.130352877194585 15.603113119070867 3.3769530999999997 15.792969 C 3.3789016433998924 15.794277872256654 3.3808547888377194 15.795579880325766 3.3828124999999996 15.796875 L 6.2929688 18.707031 C 6.543786003039588 18.96826889121244 6.916234985168734 19.07350151917291 7.266675241169932 18.98214435131215 C 7.617115497171131 18.89078718345139 7.890787008886049 18.617115749150738 7.9821442758768875 18.26667551899203 C 8.073501542867726 17.91623528883332 7.968269020263018 17.54378627693672 7.7070312 17.292969 L 6.4140625 16 L 14 16 L 14 23.585938 L 12.707031 22.292969 C 12.518759981155519 22.0994359864488 12.260235858549075 21.990249842732712 11.990234 21.990234 C 11.583310933388129 21.990341027517083 11.217025100118086 22.236989716506184 11.063903235086288 22.614004421849202 C 10.910781370054488 22.991019127192217 11.001357595904953 23.423219121112922 11.292969 23.707031 L 14.205078 26.619141 C 14.393718336632448 26.866672308471262 14.686841847766381 27.012277000550593 14.998059358851563 27.01304255410452 C 15.309276869936745 27.01380810765845 15.60311316564122 26.869647258390437 15.792969 26.623047 C 15.794277871462644 26.621098589715807 15.795579879530992 26.61914557761328 15.796875 26.617188 L 18.707031 23.707031 C 18.968271794792877 23.45621442686285 19.07350663500295 23.083764007781856 18.982149810984033 22.73332194847753 C 18.89079298696512 22.382879889173207 18.617120110826793 22.10920701303488 18.26667805152247 22.017850189015967 C 17.916235992218144 21.92649336499705 17.54378557313715 22.031728205207123 17.292969 22.292969 L 16 23.585938 L 16 16 L 23.585938 16 L 22.292969 17.292969 C 22.031728205207123 17.54378557313715 21.92649336499705 17.916235992218144 22.017850189015967 18.26667805152247 C 22.10920701303488 18.617120110826793 22.382879889173207 18.89079298696512 22.73332194847753 18.982149810984033 C 23.083764007781856 19.07350663500295 23.45621442686285 18.968271794792877 23.707031 18.707031 L 26.619141 15.794922 C 26.866672308471262 15.606281663367552 27.012277000550593 15.313158152233619 27.01304255410452 15.001940641148437 C 27.01380810765845 14.690723130063255 26.869647258390437 14.39688683435878 26.623047 14.207031 C 26.621098589715807 14.205722128537356 26.61914557761328 14.204420120469008 26.617188 14.203125 L 23.707031 11.292969 C 23.51875998115552 11.099435986448801 23.260235858549077 10.990249842732712 22.990234 10.990234 C 22.58331093338813 10.99034102751708 22.217025100118086 11.236989716506182 22.063903235086286 11.614004421849199 C 21.910781370054487 11.991019127192217 22.001357595904953 12.423219121112922 22.292969 12.707031 L 23.585938 14 L 16 14 L 16 6.4140625 L 17.292969 7.7070312 C 17.54378627693672 7.968269020263017 17.91623528883332 8.073501542867726 18.266675518992027 7.982144275876887 C 18.617115749150738 7.890787008886048 18.890787183451387 7.61711549717113 18.982144351312147 7.266675241169932 C 19.073501519172908 6.9162349851687335 18.96826889121244 6.543786003039589 18.707031 6.2929688 L 15.791016 3.3769531 C 15.59879373144233 3.1268098193024647 15.29981525485305 2.9820261207083107 14.984375 2.9863281 z" stroke-linecap="round"/>
 											</g>
 										</svg>
 
 										<span class="flex flex-col">
-											<div class="pb-2" x-text="workflow.name"></div>
+											<div class="pb-2  " x-text="workflow.name"></div>
 
 											<div class="flex gap-2">
-												<span class="text-white text-xs font-light" x-text="workflow.install_host"></span>
-												<span class="text-purple-600 text-xs font-light" x-text="workflow.id"></span>
+												<span class="dark:text-white text-xs font-light  " x-text="workflow.install_host"></span>
+												<span class="text-purple-600 text-xs font-light  " x-text="workflow.id"></span>
 
 											</div>
 
@@ -135,33 +135,23 @@
 
 
 								</td>
-								<td class="px-4 py-3 text-sm">
+								<td class="px-4 py-3 text-sm  ">
 									<span x-text="workflow.install_type"></span>
 
 
 								</td>
 								<td class="px-4 py-3 text-sm">
-									<span :class="workflow.active ? 'text-green-600' : 'text-gray-400'" x-text="workflow.active ? 'Active' : 'Inactive'"></span>
+									<span class="rounded-full w-2 h-2 block " :class="workflow.active ? 'bg-green-600' : 'bg-gray-400'"></span>
 
 
 								</td>
 
-								<td>
-									<button @click="removeFromDashboard(workflow.id)" class="flex gap-2 items-center text-white bg-purple-600 px-2 py-1 rounded-md text-xs font-light hover:bg-purple-800 transition-all">
+								<td class="px-4 py-3">
+									<button @click="removeFromDashboard(workflow.id)" class="flex gap-2 items-center text-white bg-purple-600 px-2 py-1 rounded-md text-xs font-light   transition-all duration-300   hover:bg-red-600">
 
-
-										<svg class="fill-white w-4 h-4" id='Trash_Can_24' width='24' height='24' viewbox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'><rect width='24' height='24' stroke='none' fill='#000000' opacity='0'/>
-
-
-											<g transform="matrix(0.87 0 0 0.87 12 12)">
-												<path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;" transform=" translate(-15, -14.5)" d="M 13 3 C 12.732430633846345 2.996368577261966 12.47456599490831 3.1001168838017876 12.284068139451957 3.288045380846545 C 12.093570283995604 3.475973877891302 11.986330115219811 3.7324059923494244 11.986328 4.000000000000001 L 6 4 C 5.639364083422431 3.994899710454515 5.303918635428393 4.184375296169332 5.122112278513483 4.495872849714331 C 4.940305921598572 4.80737040325933 4.940305921598573 5.192629596740671 5.122112278513484 5.504127150285671 C 5.303918635428394 5.815624703830669 5.639364083422431 6.005100289545485 6.000000000000001 6 L 24 6 C 24.360635916577568 6.005100289545485 24.696081364571608 5.815624703830668 24.877887721486516 5.50412715028567 C 25.059694078401428 5.19262959674067 25.059694078401428 4.80737040325933 24.877887721486516 4.495872849714331 C 24.696081364571608 4.184375296169332 24.360635916577568 3.994899710454515 24 4 L 18.013672 4 C 18.01366988478019 3.732405992349424 17.906429716004396 3.4759738778913007 17.715931860548043 3.288045380846544 C 17.52543400509169 3.1001168838017867 17.267569366153655 2.9963685772619657 17 3 L 13 3 z M 6 8 L 6 24 C 6 25.105 6.895 26 8 26 L 22 26 C 23.105 26 24 25.105 24 24 L 24 8 L 6 8 z" stroke-linecap="round"/>
-											</g>
-										</svg>
 
 										Remove</button>
 								</td>
-
-
 							</tr>
 						</template>
 					</tbody>

@@ -1,0 +1,19 @@
+uuid: 6c632d71-ab81-44ec-93ac-44f6b08ded0b
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_widgets
+field_name: field_widgets
+entity_type: node
+type: string_long
+settings:
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
