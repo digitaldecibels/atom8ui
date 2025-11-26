@@ -41,3 +41,15 @@ atom8.add_user_to_group:
     uid: \d+
     gid: \d+
   methods: [GET, POST]
+
+
+
+
+atom8.group_settings:
+  path: '/group/{gid}/settings'
+  defaults:
+    _controller: 'Drupal\atom8\Controller\GroupSettings::settings'
+    _title: 'Group Settings'
+  requirements:
+    _permission: 'access content'
+    gid: \d+

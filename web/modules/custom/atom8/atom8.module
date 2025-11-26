@@ -6,7 +6,7 @@ use Drupal\Core\Ajax\RedirectCommand;
 function atom8_theme() {
   return [
     'my_toggle_published' => [
-      'render element' => 'element',  // ✅ This should be at the TOP LEVEL
+      'render element' => 'element',
       'template' => 'toggle-published',
     ],
 'atom8_api_keys' => [ // This is the name used in '#theme'
@@ -17,6 +17,17 @@ function atom8_theme() {
     // Drupal will look for: 'templates/atom8-workflow-list.html.twig'
       'template' => 'atom8-api-keys',
     ],
+
+    'atom8_group_settings' => [ // This is the name used in '#theme'
+      'variables' => [
+        'workflows' => [],     // Defines the variable expected by the template
+      ],
+    // The template file to use, relative to the module root.
+    // Drupal will look for: 'templates/atom8-workflow-list.html.twig'
+      'template' => 'atom8-group-settings',
+    ],
+
+
   ];
 }
 function atom8_preprocess_my_toggle_published(&$variables) {
@@ -102,13 +113,3 @@ function basic_form_alters(&$form, FormStateInterface $form_state) {
 
 
 
-// workflow form alter
-
-function atom8_form_node_workflow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-
-  dpm($form);
-
-  $form['workflow_select'] = [
-    '#markup' => '<div id="workflow-select">here here</div>',
-  ];
-}

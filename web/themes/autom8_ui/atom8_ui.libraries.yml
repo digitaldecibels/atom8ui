@@ -33,7 +33,7 @@ charts:
     - THEMENAME/global-styling
 
 
-workflow_form:
+group_settings:
   version: 1.x
   js:
-    js/workflow-form.js: {}
+    js/group-settings.js: {}

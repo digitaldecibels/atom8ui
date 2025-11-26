@@ -1,0 +1,164 @@
+{{ attach_library('core/drupal.ajax') }}
+{{ attach_library('core/drupal.dialog.ajax') }}
+
+{{ attach_library('atom8_ui/group_settings') }}
+
+
+
+
+
+ <div x-data="groupSettings()" x-init="fetchData()" class="w-full    mt-12  ">
+
+<div class="flex gap-4">
+		<div class="w-full rounded-lg shadow-xs bg-white dark:bg-gray-800  mb-8 h-96 overflow-scroll p-4">
+
+     <h2 class="border-b pb-2">Available Workflows</h2>
+
+			<template x-if="!isLoading && !error">
+				<div>
+					<!-- Workflows Table -->
+					<div
+						class="card overflow-x-auto">
+
+
+						{# workflow tables  #}
+
+						<table x-ref="workflowsTable" class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+							<thead>
+								<tr class="bg-gray-100 dark:bg-gray-800">
+									<th class="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-400">Name</th>
+									<th class="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-400">Type</th>
+									<th class="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-400">Status</th>
+
+								</tr>
+							</thead>
+							<tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+
+
+								<template x-for="workflow in workflows" :key="workflow.id">
+									<tr class="text-gray-700 dark:text-gray-400 ">
+										<td class="px-4 py-3 text-sm">
+
+											<div class="inline-flex gap-4 cursor-move items-center " >
+
+
+
+												<span class="flex flex-col">
+													<span x-text="workflow.name"></span>
+
+                                                    <div class="flex gap-2">
+                                                    <span class="text-white text-xs font-light" x-text="workflow.install_host"></span>
+                                                    <span class="text-purple-600 text-xs font-light" x-text="workflow.id"></span>
+
+                                                    </div>
+
+												</span>
+											</div>
+
+
+										</td>
+										<td class="px-4 py-3 text-sm">
+											<span   x-text="workflow.install_type"></span>
+
+
+										</td>
+                                        	<td class="px-4 py-3 text-sm">
+											<span :class="workflow.active ? 'text-green-600' : 'text-gray-400'" x-text="workflow.active ? 'Active' : 'Inactive'"></span>
+
+
+										</td>
+
+
+									</tr>
+								</template>
+							</tbody>
+						</table>
+
+					</div>
+
+
+				</div>
+			</template>
+		</div>
+
+
+        		<div class="w-full overflow-hidden rounded-lg shadow-xs bg-white dark:bg-gray-800  mb-8 p-4">
+
+                <h2 class="border-b pb-2">Dashboard Workflows</h2>
+
+            </div>
+
+    </div>
+
+
+<div class="flex gap-4">
+		<div class="w-full   rounded-lg shadow-xs bg-white dark:bg-gray-800  mb-8 h-96 overflow-scroll p-4">
+
+     <h2 class="border-b pb-2">Available Users</h2>
+
+			<template x-if="!isLoading && !error">
+				<div>
+					<!-- Workflows Table -->
+					<div
+						class="card overflow-x-auto">
+
+
+						{# workflow tables  #}
+
+						<table x-ref="workflowsTable" class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+							<thead>
+								<tr class="bg-gray-100 dark:bg-gray-800">
+									<th class="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-400">Name</th>
+									<th class="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-400">Type</th>
+									<th class="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-400">Status</th>
+
+								</tr>
+							</thead>
+							<tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+
+
+								<template x-for="workflow in workflows" :key="workflow.id">
+									<tr class="text-gray-700 dark:text-gray-400 ">
+										<td class="px-4 py-3 text-sm">
+
+											<div class="inline-flex gap-4 cursor-move items-center " >
+
+
+
+												<span class="flex flex-col">
+													<span x-text="workflow.name"></span>
+													<span class="text-purple-600 text-xs font-light" x-text="workflow.id"></span>
+												</span>
+											</div>
+
+
+										</td>
+										<td class="px-4 py-3 text-sm">
+											<span :class="workflow.active ? 'text-green-600' : 'text-gray-400'" x-text="workflow.active ? 'Active' : 'Inactive'"></span>
+
+
+										</td>
+
+
+									</tr>
+								</template>
+							</tbody>
+						</table>
+
+					</div>
+
+
+				</div>
+			</template>
+		</div>
+
+
+        		<div class="w-full overflow-hidden rounded-lg shadow-xs bg-white dark:bg-gray-800  mb-8 p-4">
+
+                <h2 class="border-b pb-2">Users</h2>
+
+            </div>
+
+
+
+	</div>	</div>
