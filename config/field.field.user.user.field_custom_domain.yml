@@ -1,0 +1,20 @@
+uuid: 01fe1600-4872-464a-aa73-65c3b50ddae7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_custom_domain
+  module:
+    - user
+id: user.user.field_custom_domain
+field_name: field_custom_domain
+entity_type: user
+bundle: user
+label: 'Custom Domain'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

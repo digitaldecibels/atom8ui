@@ -79,7 +79,7 @@ function groupSettings() {
 
         const existingWorkflows = await response.json();
 
-        console.log('Existing workflows from REST:', existingWorkflows);
+
 
         // Match each saved workflow with the full workflow data from this.workflows
         this.dashboardWorkflows = existingWorkflows.map(savedWorkflow => {
@@ -162,7 +162,7 @@ function groupSettings() {
           throw new Error(error);
         }
 
-        console.log('Workflow node created:', json);
+
 
         const createdNodeId = json.data.attributes.drupal_internal__nid;
         const createdNodeUuid = json.data.id; // This is the UUID
@@ -172,7 +172,7 @@ function groupSettings() {
         workflow.nodeUuid = createdNodeUuid;
         workflow.drupalNodeId = createdNodeId;
 
-           console.log(workflow ,'jsp data!');
+
         // If you have a group ID, add the node to the group
         if (this.groupId) {
           await this.addNodeToGroup(createdNodeId);
@@ -399,5 +399,77 @@ function groupSettings() {
 
       this.isLoading = false;
     },
+
   };
+}
+
+
+
+
+
+function userDragDrop({ userId, groupId }) {
+    return {
+        availableUsers: [],
+        groupUsers: [],
+        dragging: null,
+        userId,
+        groupId,
+
+        searchUser: "",   // 👈 add this for filtering
+
+        // Computed filtered users
+        get filteredAvailableUsers() {
+            if (!this.searchUser) return this.availableUsers;
+
+            const search = this.searchUser.toLowerCase();
+
+            return this.availableUsers.filter(u =>
+                u.name && u.name.toLowerCase().includes(search)
+            );
+        },
+
+        async loadUsers() {
+            const all = await fetch(`/rest/users/users/${this.userId}`)
+                .then(r => r.json());
+
+            const group = await fetch(`/rest/group/users/${this.groupId}`)
+                .then(r => r.json());
+
+            this.availableUsers = all;
+            this.groupUsers = group;
+
+            console.log(all, 'all users');
+        },
+
+        dragUser(user) { this.dragging = user; },
+
+        async dropUser(event, target) {
+            if (!this.dragging) return;
+
+            const isToGroup = target === 'group';
+
+            if (isToGroup) {
+                this.groupUsers.push(this.dragging);
+                this.availableUsers = this.availableUsers.filter(
+                    u => u.uid !== this.dragging.uid
+                );
+            } else {
+                this.availableUsers.push(this.dragging);
+                this.groupUsers = this.groupUsers.filter(
+                    u => u.uid !== this.dragging.uid
+                );
+            }
+
+            await fetch(`/rest/group/users/${this.userId}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    uid: this.dragging.uid,
+                    action: isToGroup ? "add" : "remove"
+                }),
+            });
+
+            this.dragging = null;
+        }
+    }
 }

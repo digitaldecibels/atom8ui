@@ -3,9 +3,15 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.user.user.field_custom_domain
     - field.field.user.user.field_first_name
+    - field.field.user.user.field_highlight_color
     - field.field.user.user.field_last_name
     - field.field.user.user.field_organization
+    - field.field.user.user.field_owner_references
+    - field.field.user.user.field_primary_color
+    - field.field.user.user.field_secondary_color
+    - field.field.user.user.field_subdomain
   module:
     - user
 id: user.user.default
@@ -13,6 +19,14 @@ targetEntityType: user
 bundle: user
 mode: default
 content:
+  field_custom_domain:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 56
+    region: content
   field_first_name:
     type: string
     label: above
@@ -20,6 +34,14 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 51
+    region: content
+  field_highlight_color:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 59
     region: content
   field_last_name:
     type: string
@@ -36,6 +58,38 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 53
+    region: content
+  field_owner_references:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 54
+    region: content
+  field_primary_color:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 57
+    region: content
+  field_secondary_color:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 58
+    region: content
+  field_subdomain:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 55
     region: content
   masquerade:
     settings: {  }

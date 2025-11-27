@@ -2714,6 +2714,14 @@ select{
   min-height: 100vh;
 }
 
+.min-h-\[300px\]{
+  min-height: 300px;
+}
+
+.min-h-\[200px\]{
+  min-height: 200px;
+}
+
 .w-0{
   width: 0px;
 }
@@ -8495,6 +8503,10 @@ div.description{
 
 .dark\:bg-red-600:is(.dark *){
   background-color: var(--color-red-600);
+}
+
+.dark\:bg-purple-700:is(.dark *){
+  background-color: var(--color-purple-700);
 }
 
 .dark\:fill-white:is(.dark *){

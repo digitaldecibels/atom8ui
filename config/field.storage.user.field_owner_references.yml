@@ -1,0 +1,19 @@
+uuid: 1031ec33-8c4f-41f9-b8a8-67630192c554
+langcode: en
+status: true
+dependencies:
+  module:
+    - user
+id: user.field_owner_references
+field_name: field_owner_references
+entity_type: user
+type: entity_reference
+settings:
+  target_type: user
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
