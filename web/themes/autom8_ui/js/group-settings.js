@@ -407,69 +407,85 @@ function groupSettings() {
 
 
 
-function userDragDrop({ userId, groupId }) {
-    return {
-        availableUsers: [],
-        groupUsers: [],
-        dragging: null,
-        userId,
-        groupId,
+function userDragDrop({ userId, groupId }) {return {
+    availableUsers: [],
+    groupUsers: [],
+    dragging: null,
+    userId,
+    groupId,
 
-        searchUser: "",   // 👈 add this for filtering
+    searchUser: "",
 
-        // Computed filtered users
-        get filteredAvailableUsers() {
-            if (!this.searchUser) return this.availableUsers;
+    // Filter available users
+    get filteredAvailableUsers() {
+        if (!this.searchUser.trim()) return this.availableUsers;
 
-            const search = this.searchUser.toLowerCase();
+        const searchLower = this.searchUser.toLowerCase();
 
-            return this.availableUsers.filter(u =>
-                u.name && u.name.toLowerCase().includes(search)
-            );
-        },
+        return this.availableUsers.filter(u =>
+            u.name?.toLowerCase().includes(searchLower)
+        );
+    },
 
-        async loadUsers() {
-            const all = await fetch(`/rest/users/users/${this.userId}`)
-                .then(r => r.json());
+    async loadUsers() {
+        const all = await fetch(`/rest/users/users/${this.userId}`)
+            .then(r => r.json());
 
-            const group = await fetch(`/rest/group/users/${this.groupId}`)
-                .then(r => r.json());
+        const group = await fetch(`/rest/group/users/${this.groupId}`)
+            .then(r => r.json());
 
-            this.availableUsers = all;
-            this.groupUsers = group;
+        this.availableUsers = all;
+        this.groupUsers = group;
+    },
 
-            console.log(all, 'all users');
-        },
+    dragUser(user) {
+        this.dragging = user;
+    },
 
-        dragUser(user) { this.dragging = user; },
+    async dropUser(event, target) {
+        if (!this.dragging) return;
 
-        async dropUser(event, target) {
-            if (!this.dragging) return;
+        const uid = this.dragging.uid;
+        const isToGroup = target === 'group';
 
-            const isToGroup = target === 'group';
-
-            if (isToGroup) {
+        // --- Move to RIGHT (group) ---
+        if (isToGroup) {
+            // Ensure not already in group
+            if (!this.groupUsers.some(u => u.uid === uid)) {
                 this.groupUsers.push(this.dragging);
-                this.availableUsers = this.availableUsers.filter(
-                    u => u.uid !== this.dragging.uid
-                );
-            } else {
-                this.availableUsers.push(this.dragging);
-                this.groupUsers = this.groupUsers.filter(
-                    u => u.uid !== this.dragging.uid
-                );
             }
 
-            await fetch(`/rest/group/users/${this.userId}`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    uid: this.dragging.uid,
-                    action: isToGroup ? "add" : "remove"
-                }),
-            });
-
-            this.dragging = null;
+            // Remove from available list
+            this.availableUsers = this.availableUsers.filter(
+                u => u.uid !== uid
+            );
         }
-    }
+
+        // --- Move to LEFT (available) ---
+        else {
+            // Ensure not already in available
+            if (!this.availableUsers.some(u => u.uid === uid)) {
+                this.availableUsers.push(this.dragging);
+            }
+
+            // Remove from group list
+            this.groupUsers = this.groupUsers.filter(
+                u => u.uid !== uid
+            );
+        }
+
+        // Persist the action
+        await fetch(`/rest/group/users/${this.userId}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                uid,
+                action: isToGroup ? "add" : "remove"
+            }),
+        });
+
+        this.dragging = null;
+    },
+}
+
 }
